@@ -4,9 +4,7 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 
 AppBar homePageAppBar() {
   return AppBar(
-    elevation: 0,
     leading: IconButton(
-      color: Colors.black,
       icon: Icon(Icons.menu),
       onPressed: () {},
     ),

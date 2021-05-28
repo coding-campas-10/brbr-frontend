@@ -4,17 +4,13 @@ import 'package:flutter/material.dart';
 
 AppBar profilePageAppbar() {
   return AppBar(
-      elevation: 0,
-      leading: IconButton(
-        color: Colors.black,
-        icon: Icon(Icons.menu),
-        onPressed: () {},
-      ),
-      title: Text(
-        '마이 페이지',
-        style: TextStyle(color: Colors.black),
-      ),
-      centerTitle: true);
+    leading: IconButton(
+      color: Colors.black,
+      icon: Icon(Icons.menu),
+      onPressed: () {},
+    ),
+    title: Text('마이 페이지'),
+  );
 }
 
 class ProfilePage extends StatelessWidget {

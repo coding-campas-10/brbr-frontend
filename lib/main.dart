@@ -13,7 +13,18 @@ class BRBRApp extends StatelessWidget {
     return MaterialApp(
       title: '버려버려',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(brightness: Brightness.light, appBarTheme: AppBarTheme(backgroundColor: Colors.white, titleTextStyle: TextStyle(color: Colors.black))),
+      theme: ThemeData(
+        appBarTheme: AppBarTheme(
+          backwardsCompatibility: false,
+          backgroundColor: Colors.white,
+          centerTitle: true,
+          titleTextStyle: TextStyle(color: Colors.black),
+          actionsIconTheme: IconThemeData(color: Colors.black),
+          iconTheme: IconThemeData(color: Colors.black),
+          elevation: 0,
+        ),
+        scaffoldBackgroundColor: Colors.white,
+      ),
       home: LoginPage(),
     );
   }

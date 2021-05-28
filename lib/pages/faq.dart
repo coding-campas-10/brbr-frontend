@@ -7,10 +7,7 @@ class FAQPage extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           'FAQ',
-          style: TextStyle(color: Colors.black),
         ),
-        foregroundColor: Colors.black,
-        centerTitle: true,
       ),
     );
   }

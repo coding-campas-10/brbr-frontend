@@ -1,4 +1,3 @@
-import 'package:brbr/pages/home.dart';
 import 'package:brbr/pages/wrapper.dart';
 import 'package:flutter/material.dart';
 
@@ -8,13 +7,10 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text(
-            '로그인',
-            style: TextStyle(color: Colors.black),
-          ),
-          elevation: 0,
-          centerTitle: true),
-      backgroundColor: Colors.white,
+        title: Text(
+          '로그인',
+        ),
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(32, 0, 32, 40),

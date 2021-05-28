@@ -20,7 +20,6 @@ class _BRBRWrapperState extends State<BRBRWrapper> {
         index: _pageIndex,
         children: _pages,
       ),
-      backgroundColor: Colors.white,
       bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
