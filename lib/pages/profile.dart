@@ -1,4 +1,10 @@
 import 'package:brbr/pages/faq.dart';
+import 'package:brbr/pages/notifications.dart';
+import 'package:brbr/pages/permision.dart';
+import 'package:brbr/pages/policy.dart';
+import 'package:brbr/pages/profile_settings.dart';
+import 'package:brbr/pages/support.dart';
+import 'package:brbr/pages/version_info.dart';
 import 'package:brbr/widgets/brbr_card.dart';
 import 'package:flutter/material.dart';
 
@@ -48,24 +54,8 @@ class ProfilePage extends StatelessWidget {
             padding: EdgeInsets.all(16),
           ),
         ),
+        _MoreActs(),
         SizedBox(height: 16),
-        ListTile(leading: Icon(Icons.person), title: Text('내 프로필'), onTap: () {}, contentPadding: EdgeInsets.symmetric(horizontal: 24)),
-        ListTile(leading: Icon(Icons.notifications), title: Text('알림'), onTap: () {}, contentPadding: EdgeInsets.symmetric(horizontal: 24)),
-        ListTile(leading: Icon(Icons.accessibility), title: Text('권한'), onTap: () {}, contentPadding: EdgeInsets.symmetric(horizontal: 24)),
-        ListTile(leading: Icon(Icons.support_agent), title: Text('고객 지원'), onTap: () {}, contentPadding: EdgeInsets.symmetric(horizontal: 24)),
-        ListTile(leading: Icon(Icons.receipt_long), title: Text('약관 및 정책'), onTap: () {}, contentPadding: EdgeInsets.symmetric(horizontal: 24)),
-        ListTile(leading: Icon(Icons.receipt_long), title: Text('버전 정보'), onTap: () {}, contentPadding: EdgeInsets.symmetric(horizontal: 24)),
-        ListTile(
-            leading: Icon(Icons.receipt_long),
-            title: Text('FAQ'),
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => FAQPage(),
-                  ));
-            },
-            contentPadding: EdgeInsets.symmetric(horizontal: 24)),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 16),
           child: BRBRCard(
@@ -134,6 +124,38 @@ class _ProfileCard extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _MoreActs extends StatelessWidget {
+  final _acts = [
+    {'title': '내 프로필', 'icon': Icon(Icons.person), 'link_page': ProfileSettingsPage()},
+    {'title': '알림', 'icon': Icon(Icons.notifications), 'link_page': NotificationsPage()},
+    {'title': '권한', 'icon': Icon(Icons.accessibility), 'link_page': PermissionPage()},
+    {'title': '고객 지원', 'icon': Icon(Icons.support_agent), 'link_page': SupportPage()},
+    {'title': '약관 및 정책', 'icon': Icon(Icons.receipt_long), 'link_page': PolicyPage()},
+    {'title': '버전 정보', 'icon': Icon(Icons.info), 'link_page': VersionInfoPage()},
+    {'title': 'FAQ', 'icon': Icon(Icons.help), 'link_page': FAQPage()},
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: _acts
+          .map(
+            (act) => ListTile(
+              title: Text(act['title']),
+              leading: act['icon'],
+              contentPadding: EdgeInsets.symmetric(horizontal: 24),
+              onTap: () {
+                if (act['link_page'] != null) {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => act['link_page']));
+                }
+              },
+            ),
+          )
+          .toList(),
     );
   }
 }

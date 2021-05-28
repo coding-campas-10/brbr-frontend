@@ -1,0 +1,26 @@
+[
+	{
+		"header": "질문 고양이",
+		"contents": "답변 고양이"
+	},
+	{
+		"header": "질문 강아지",
+		"contents": "답변 강아지"
+	},
+	{
+		"header": "질문 송아지",
+		"contents": "답변 송아지"
+	},
+	{
+		"header": "질문 얼룩말",
+		"contents": "답변 얼룩말"
+	},
+	{
+		"header": "질문 병아리",
+		"contents": "답변 병아리"
+	},
+	{
+		"header": "질문 티라노",
+		"contents": "답변 티라노"
+	}
+]
