@@ -4,10 +4,10 @@ PODS:
   - google_maps_flutter (0.0.1):
     - Flutter
     - GoogleMaps
-  - GoogleMaps (4.1.0):
-    - GoogleMaps/Maps (= 4.1.0)
-  - GoogleMaps/Base (4.1.0)
-  - GoogleMaps/Maps (4.1.0):
+  - GoogleMaps (5.0.0):
+    - GoogleMaps/Maps (= 5.0.0)
+  - GoogleMaps/Base (5.0.0)
+  - GoogleMaps/Maps (5.0.0):
     - GoogleMaps/Base
   - KakaoSDK (2.5.3):
     - KakaoSDKAuth (= 2.5.3)
@@ -71,7 +71,7 @@ SPEC CHECKSUMS:
   Alamofire: e447a2774a40c996748296fa2c55112fdbbc42f9
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
   google_maps_flutter: df4e7de95264aa0a2f11aac0fc7e313acb8ffc7e
-  GoogleMaps: 008e2c80e38605b56b560e8deb73d4194ff30bef
+  GoogleMaps: 600e5e69bdf7f4ed7cac4d6aa96c7ec08a5aa254
   KakaoSDK: 61f5d72d4c90188bf3d6567ffeef42d2827e9f77
   KakaoSDKAuth: b1a0b9a84c21c967c4139d221edce83a7f15cdfe
   KakaoSDKCommon: 08548932f6f570215ea038241a98157c0b3f7a8b
