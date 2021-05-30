@@ -1,3 +1,5 @@
+import 'package:brbr/pages/my_point.dart';
+import 'package:brbr/pages/notice.dart';
 import 'package:brbr/widgets/brbr_card.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
@@ -25,6 +27,9 @@ class HomePage extends StatelessWidget {
             ),
           ),
           padding: EdgeInsets.all(16),
+          onTab: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => NoticePage()));
+          },
         ),
         SizedBox(height: 16),
         BRBRCard(
@@ -101,6 +106,9 @@ class HomePage extends StatelessWidget {
           ),
           padding: EdgeInsets.all(16),
           backgroundColor: Color.fromRGBO(0, 227, 147, 1),
+          onTab: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => MyPoinPage()));
+          },
         ),
         SizedBox(height: 16),
         Row(

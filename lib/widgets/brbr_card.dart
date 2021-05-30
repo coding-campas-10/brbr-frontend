@@ -10,20 +10,21 @@ class BRBRCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTab,
-      child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(8),
+        onTap: onTab,
         child: Padding(
           padding: padding,
           child: child,
         ),
-        elevation: 15,
-        shadowColor: Color.fromRGBO(0, 0, 0, 0.3),
-        color: backgroundColor ?? Colors.white,
       ),
+      elevation: 15,
+      shadowColor: Color.fromRGBO(0, 0, 0, 0.3),
+      color: backgroundColor ?? Colors.white,
     );
   }
 }

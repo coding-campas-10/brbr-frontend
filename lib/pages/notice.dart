@@ -1,10 +1,10 @@
 import 'dart:convert';
-import 'package:brbr/pages/faq_detail.dart';
+import 'package:brbr/pages/notice_detail.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:flutter/services.dart';
 
-class FAQPage extends StatelessWidget {
+class NoticePage extends StatelessWidget {
   Future _readFAQ(String path) async {
     return jsonDecode(await rootBundle.loadString(path));
   }
@@ -14,12 +14,12 @@ class FAQPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'FAQ',
+          '공지사항',
         ),
       ),
       body: FutureBuilder(
         initialData: [],
-        future: _readFAQ('resources/faq.json'),
+        future: _readFAQ('resources/notice.json'),
         builder: (context, snapshot) => ListView.builder(
           itemCount: snapshot.data.length,
           itemBuilder: (context, index) {
@@ -27,7 +27,7 @@ class FAQPage extends StatelessWidget {
             return ListTile(
               title: Text(header),
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => FAQDetailPage(header: header, contents: contents)));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => NoticeDetailPage(header: header, contents: contents)));
               },
             );
           },

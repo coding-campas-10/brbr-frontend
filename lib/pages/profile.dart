@@ -4,6 +4,7 @@ import 'package:brbr/pages/permision.dart';
 import 'package:brbr/pages/policy.dart';
 import 'package:brbr/pages/profile_settings.dart';
 import 'package:brbr/pages/support.dart';
+import 'package:brbr/pages/user_report.dart';
 import 'package:brbr/pages/version_info.dart';
 import 'package:brbr/widgets/brbr_card.dart';
 import 'package:flutter/material.dart';
@@ -52,6 +53,9 @@ class ProfilePage extends StatelessWidget {
               ],
             ),
             padding: EdgeInsets.all(16),
+            onTab: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => UserReportPage()));
+            },
           ),
         ),
         _MoreActs(),

@@ -37,6 +37,9 @@ class LoginPage extends StatelessWidget {
                           },
                         ),
                         TextFormField(
+                          enableSuggestions: false,
+                          autocorrect: false,
+                          obscureText: true,
                           decoration: InputDecoration(
                             hintText: '비밀번호',
                             border: OutlineInputBorder(),
