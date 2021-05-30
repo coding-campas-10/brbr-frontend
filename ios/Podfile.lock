@@ -1,4 +1,5 @@
 PODS:
+  - Alamofire (5.4.3)
   - Flutter (1.0.0)
   - google_maps_flutter (0.0.1):
     - Flutter
@@ -8,14 +9,57 @@ PODS:
   - GoogleMaps/Base (4.1.0)
   - GoogleMaps/Maps (4.1.0):
     - GoogleMaps/Base
+  - KakaoSDK (2.5.3):
+    - KakaoSDKAuth (= 2.5.3)
+    - KakaoSDKCommon (= 2.5.3)
+    - KakaoSDKLink (= 2.5.3)
+    - KakaoSDKNavi (= 2.5.3)
+    - KakaoSDKStory (= 2.5.3)
+    - KakaoSDKTalk (= 2.5.3)
+    - KakaoSDKTemplate (= 2.5.3)
+    - KakaoSDKUser (= 2.5.3)
+  - KakaoSDKAuth (2.5.3):
+    - KakaoSDKCommon (= 2.5.3)
+  - KakaoSDKCommon (2.5.3):
+    - KakaoSDKCommon/Common (= 2.5.3)
+    - KakaoSDKCommon/Network (= 2.5.3)
+  - KakaoSDKCommon/Common (2.5.3)
+  - KakaoSDKCommon/Network (2.5.3):
+    - Alamofire (~> 5.1)
+    - KakaoSDKCommon/Common (= 2.5.3)
+  - KakaoSDKLink (2.5.3):
+    - KakaoSDKCommon (= 2.5.3)
+    - KakaoSDKTemplate (= 2.5.3)
+  - KakaoSDKNavi (2.5.3):
+    - KakaoSDKCommon/Common (= 2.5.3)
+  - KakaoSDKStory (2.5.3):
+    - KakaoSDKUser (= 2.5.3)
+  - KakaoSDKTalk (2.5.3):
+    - KakaoSDKTemplate (= 2.5.3)
+    - KakaoSDKUser (= 2.5.3)
+  - KakaoSDKTemplate (2.5.3):
+    - KakaoSDKCommon/Common (= 2.5.3)
+  - KakaoSDKUser (2.5.3):
+    - KakaoSDKAuth (= 2.5.3)
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
   - google_maps_flutter (from `.symlinks/plugins/google_maps_flutter/ios`)
+  - KakaoSDK
 
 SPEC REPOS:
   trunk:
+    - Alamofire
     - GoogleMaps
+    - KakaoSDK
+    - KakaoSDKAuth
+    - KakaoSDKCommon
+    - KakaoSDKLink
+    - KakaoSDKNavi
+    - KakaoSDKStory
+    - KakaoSDKTalk
+    - KakaoSDKTemplate
+    - KakaoSDKUser
 
 EXTERNAL SOURCES:
   Flutter:
@@ -24,10 +68,20 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/google_maps_flutter/ios"
 
 SPEC CHECKSUMS:
+  Alamofire: e447a2774a40c996748296fa2c55112fdbbc42f9
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
   google_maps_flutter: df4e7de95264aa0a2f11aac0fc7e313acb8ffc7e
   GoogleMaps: 008e2c80e38605b56b560e8deb73d4194ff30bef
+  KakaoSDK: 61f5d72d4c90188bf3d6567ffeef42d2827e9f77
+  KakaoSDKAuth: b1a0b9a84c21c967c4139d221edce83a7f15cdfe
+  KakaoSDKCommon: 08548932f6f570215ea038241a98157c0b3f7a8b
+  KakaoSDKLink: 4d35879b0abd90fbd0bc0de56dbb06097e9b31d3
+  KakaoSDKNavi: 31fd6ad030cf7200d546202cbe22f7a8b38eb983
+  KakaoSDKStory: 6d666f665fbe4b8453ce19959b9bb9e3bf38a5df
+  KakaoSDKTalk: 58cf9c530cc8024ae2ed3839d40acd992ecaf909
+  KakaoSDKTemplate: 5939681de6c24fd81e93bf824982e979e794f87e
+  KakaoSDKUser: 5d2de71fe070455bbaaad6a37af3eb500fbc8972
 
-PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
+PODFILE CHECKSUM: 697b73efc2410d6589d5ef70b378e84921b93582
 
 COCOAPODS: 1.10.1
