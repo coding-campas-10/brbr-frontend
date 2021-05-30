@@ -1,6 +1,11 @@
 PODS:
   - Alamofire (5.4.3)
   - Flutter (1.0.0)
+  - flutter_kakao_login (1.0.0):
+    - Flutter
+    - KakaoSDKAuth (~> 2.5.2)
+    - KakaoSDKCommon (~> 2.5.2)
+    - KakaoSDKUser (~> 2.5.2)
   - google_maps_flutter (0.0.1):
     - Flutter
     - GoogleMaps
@@ -44,6 +49,7 @@ PODS:
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
+  - flutter_kakao_login (from `.symlinks/plugins/flutter_kakao_login/ios`)
   - google_maps_flutter (from `.symlinks/plugins/google_maps_flutter/ios`)
   - KakaoSDK
 
@@ -64,12 +70,15 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
+  flutter_kakao_login:
+    :path: ".symlinks/plugins/flutter_kakao_login/ios"
   google_maps_flutter:
     :path: ".symlinks/plugins/google_maps_flutter/ios"
 
 SPEC CHECKSUMS:
   Alamofire: e447a2774a40c996748296fa2c55112fdbbc42f9
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
+  flutter_kakao_login: 46eae417e1086f27d0e8fdeabbc236909c3098f3
   google_maps_flutter: df4e7de95264aa0a2f11aac0fc7e313acb8ffc7e
   GoogleMaps: 600e5e69bdf7f4ed7cac4d6aa96c7ec08a5aa254
   KakaoSDK: 61f5d72d4c90188bf3d6567ffeef42d2827e9f77
