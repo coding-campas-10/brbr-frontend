@@ -6,8 +6,10 @@ import 'package:brbr/pages/profile_settings.dart';
 import 'package:brbr/pages/support.dart';
 import 'package:brbr/pages/user_report.dart';
 import 'package:brbr/pages/version_info.dart';
+import 'package:brbr/utils/services/brbr_auth.dart';
 import 'package:brbr/widgets/brbr_card.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 AppBar profilePageAppbar() {
   return AppBar(
@@ -83,39 +85,44 @@ class _ProfileCard extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Text(
-                    '최진우님',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                  ),
-                  MaterialButton(
-                    onPressed: () {},
-                    child: Text('로그 아웃'),
-                  ),
-                ],
-              ),
-              SizedBox(height: 8),
-              InkWell(
-                onTap: () {},
-                child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 8),
-                  child: Row(
-                    children: [
-                      Text(
-                        '최근 이용 스테이션:동탄 반송 3 스테이션',
-                        style: TextStyle(fontSize: 12),
-                      ),
-                      SizedBox(width: 16),
-                      Icon(Icons.arrow_forward_ios, size: 12),
-                    ],
-                  ),
+          Consumer<BRBRAuth>(
+            builder: (context, value, child) => Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(value.userId),
+                Row(
+                  children: [
+                    Text(
+                      '최진우님',
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                    ),
+                    MaterialButton(
+                      onPressed: () {
+                        value.logout();
+                      },
+                      child: Text('로그 아웃'),
+                    ),
+                  ],
                 ),
-              )
-            ],
+                SizedBox(height: 8),
+                InkWell(
+                  onTap: () {},
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(vertical: 8),
+                    child: Row(
+                      children: [
+                        Text(
+                          '최근 이용 스테이션:동탄 반송 3 스테이션',
+                          style: TextStyle(fontSize: 12),
+                        ),
+                        SizedBox(width: 16),
+                        Icon(Icons.arrow_forward_ios, size: 12),
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
           CircleAvatar(
             radius: 24,

@@ -46,12 +46,15 @@ PODS:
     - KakaoSDKCommon/Common (= 2.5.3)
   - KakaoSDKUser (2.5.3):
     - KakaoSDKAuth (= 2.5.3)
+  - shared_preferences (0.0.1):
+    - Flutter
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_kakao_login (from `.symlinks/plugins/flutter_kakao_login/ios`)
   - google_maps_flutter (from `.symlinks/plugins/google_maps_flutter/ios`)
   - KakaoSDK
+  - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
 
 SPEC REPOS:
   trunk:
@@ -74,6 +77,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_kakao_login/ios"
   google_maps_flutter:
     :path: ".symlinks/plugins/google_maps_flutter/ios"
+  shared_preferences:
+    :path: ".symlinks/plugins/shared_preferences/ios"
 
 SPEC CHECKSUMS:
   Alamofire: e447a2774a40c996748296fa2c55112fdbbc42f9
@@ -90,6 +95,7 @@ SPEC CHECKSUMS:
   KakaoSDKTalk: 58cf9c530cc8024ae2ed3839d40acd992ecaf909
   KakaoSDKTemplate: 5939681de6c24fd81e93bf824982e979e794f87e
   KakaoSDKUser: 5d2de71fe070455bbaaad6a37af3eb500fbc8972
+  shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
 
 PODFILE CHECKSUM: 697b73efc2410d6589d5ef70b378e84921b93582
 
