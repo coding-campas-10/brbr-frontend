@@ -4,9 +4,9 @@ class BRBRCard extends StatelessWidget {
   final EdgeInsets padding;
   final Widget child;
   final Color backgroundColor;
-  final VoidCallback onTab;
+  final VoidCallback? onTab;
 
-  BRBRCard({this.child, this.padding = const EdgeInsets.all(0), this.backgroundColor, this.onTab});
+  BRBRCard({required this.child, this.padding = const EdgeInsets.all(0), this.backgroundColor = Colors.white, this.onTab});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class BRBRCard extends StatelessWidget {
       ),
       elevation: 15,
       shadowColor: Color.fromRGBO(0, 0, 0, 0.3),
-      color: backgroundColor ?? Colors.white,
+      color: backgroundColor,
     );
   }
 }

@@ -10,15 +10,15 @@ enum LoginStatus { loggedIn, loggedOut }
 class BRBRAuth extends ChangeNotifier {
   static BRBRAuth _instance = BRBRAuth._internal();
 
-  SharedPreferences _sharedPreferences;
-  LoginStatus _loginStatus;
-  String _userId;
+  late SharedPreferences _sharedPreferences;
+  late LoginStatus _loginStatus;
+  String? _userId;
   final FlutterKakaoLogin _kakaoSignIn = FlutterKakaoLogin();
   bool _isLoaded = false;
 
   BRBRAuth._internal();
 
-  String get userId => _userId;
+  String? get userId => _userId;
 
   LoginStatus get loginStatus => _loginStatus;
 
@@ -52,10 +52,10 @@ class BRBRAuth extends ChangeNotifier {
     if (_instance.loginStatus == LoginStatus.loggedOut) {
       try {
         await _instance._kakaoSignIn.logIn();
-        KakaoAccountResult account = (await _instance._kakaoSignIn.getUserMe()).account;
-        _instance._userId = account.userID;
-        print('카카오 로그인 성공' + _instance.userId);
-        await _instance._sharedPreferences.setString('user_id', _instance.userId);
+        KakaoAccountResult? account = (await _instance._kakaoSignIn.getUserMe()).account;
+        _instance._userId = account!.userID;
+        print('카카오 로그인 성공' + _instance.userId!);
+        await _instance._sharedPreferences.setString('user_id', _instance.userId!);
         _instance._setLoginStatus(LoginStatus.loggedIn);
       } on PlatformException catch (e) {
         print('카카오 로그인 실패');
@@ -66,6 +66,7 @@ class BRBRAuth extends ChangeNotifier {
 
   Future<void> logout() async {
     _instance._sharedPreferences.remove('user_id');
+    _instance._userId = null;
     print('로그 아웃');
     _instance._setLoginStatus(LoginStatus.loggedOut);
   }

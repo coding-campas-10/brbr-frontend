@@ -1,15 +1,26 @@
+import 'package:brbr/constants/colors.dart';
 import 'package:brbr/pages/my_point.dart';
 import 'package:brbr/pages/notice.dart';
+import 'package:brbr/pages/notifications.dart';
+import 'package:brbr/pages/user_report.dart';
 import 'package:brbr/widgets/brbr_card.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
-AppBar homePageAppBar() {
+AppBar homePageAppBar(BuildContext context) {
   return AppBar(
     leading: IconButton(
-      icon: Icon(Icons.menu),
+      icon: Icon(Icons.qr_code_scanner),
       onPressed: () {},
     ),
+    actions: [
+      IconButton(
+        icon: Icon(Icons.notifications_none),
+        onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => NoticePage()));
+        },
+      )
+    ],
   );
 }
 
@@ -19,56 +30,26 @@ class HomePage extends StatelessWidget {
     return ListView(
       padding: EdgeInsets.all(16),
       children: [
-        BRBRCard(
-          child: Center(
-            child: Text(
-              '동탄 반송 5 스테이션 신규 설치 안내',
-              style: TextStyle(fontWeight: FontWeight.w600),
+        Text(
+          '최진우님',
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+        ),
+        SizedBox(height: 8),
+        InkWell(
+          onTap: () {},
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: 8),
+            child: Row(
+              children: [
+                Text(
+                  '최근 이용 스테이션:동탄 반송 3 스테이션',
+                  style: TextStyle(fontSize: 12, color: Color.fromRGBO(0, 0, 0, 0.6)),
+                ),
+                SizedBox(width: 16),
+                Icon(Icons.arrow_forward_ios, size: 10, color: Color.fromRGBO(0, 0, 0, 0.6)),
+              ],
             ),
           ),
-          padding: EdgeInsets.all(16),
-          onTab: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => NoticePage()));
-          },
-        ),
-        SizedBox(height: 16),
-        BRBRCard(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              RichText(
-                text: TextSpan(
-                  style: TextStyle(color: Colors.black, fontSize: 20),
-                  children: <TextSpan>[
-                    TextSpan(text: '최진우', style: TextStyle(fontWeight: FontWeight.bold)),
-                    TextSpan(text: '님의 기록이에요'),
-                  ],
-                ),
-              ),
-              SizedBox(height: 16),
-              LinearPercentIndicator(
-                lineHeight: 16,
-                percent: 0.6,
-                backgroundColor: Color.fromRGBO(229, 229, 229, 1),
-                progressColor: Color.fromRGBO(0, 227, 147, 1),
-              ),
-              SizedBox(height: 16),
-              RichText(
-                text: TextSpan(
-                  style: TextStyle(color: Color.fromRGBO(170, 170, 170, 1), fontSize: 16),
-                  children: <TextSpan>[
-                    TextSpan(text: '500kg', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24, color: Colors.black)),
-                    TextSpan(text: '/800kg'),
-                  ],
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [IconButton(icon: Icon(Icons.qr_code_scanner), onPressed: () {})],
-              )
-            ],
-          ),
-          padding: EdgeInsets.all(16),
         ),
         SizedBox(height: 16),
         BRBRCard(
@@ -92,7 +73,7 @@ class HomePage extends StatelessWidget {
                     '23,200원',
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 34,
+                      fontSize: 28,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -105,12 +86,50 @@ class HomePage extends StatelessWidget {
             ],
           ),
           padding: EdgeInsets.all(16),
-          backgroundColor: Color.fromRGBO(0, 227, 147, 1),
+          backgroundColor: BRBRColors.highlight,
           onTab: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => MyPoinPage()));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => MyPointPage()));
           },
         ),
-        SizedBox(height: 16),
+        SizedBox(height: 8),
+        BRBRCard(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              RichText(
+                text: TextSpan(
+                  style: TextStyle(color: Colors.black, fontSize: 20),
+                  children: <TextSpan>[
+                    TextSpan(text: '최진우', style: TextStyle(fontWeight: FontWeight.bold)),
+                    TextSpan(text: '님의 기록이에요'),
+                  ],
+                ),
+              ),
+              SizedBox(height: 8),
+              LinearPercentIndicator(
+                lineHeight: 16,
+                percent: 0.6,
+                backgroundColor: Color.fromRGBO(229, 229, 229, 1),
+                progressColor: BRBRColors.highlight,
+              ),
+              SizedBox(height: 16),
+              RichText(
+                text: TextSpan(
+                  style: TextStyle(color: Color.fromRGBO(170, 170, 170, 1), fontSize: 16),
+                  children: <TextSpan>[
+                    TextSpan(text: '500kg', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24, color: Colors.black)),
+                    TextSpan(text: '/800kg'),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          onTab: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => UserReportPage()));
+          },
+          padding: EdgeInsets.symmetric(vertical: 31, horizontal: 16),
+        ),
+        SizedBox(height: 8),
         Row(
           children: [
             Expanded(
@@ -119,11 +138,11 @@ class HomePage extends StatelessWidget {
                 child: BRBRCard(
                   child: Stack(
                     children: [
-                      Text('분리수거 정보 알아보기', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                      Text('분리수거 정보 \n알아보기', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                       Positioned(child: Icon(Icons.qr_code_scanner), right: 0, bottom: 0),
                     ],
                   ),
-                  padding: EdgeInsets.all(16),
+                  padding: EdgeInsets.only(top: 24, left: 16, right: 16, bottom: 16),
                 ),
               ),
             ),
@@ -133,27 +152,34 @@ class HomePage extends StatelessWidget {
                 child: BRBRCard(
                   child: Stack(
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      Stack(
+                        fit: StackFit.expand,
                         children: [
-                          Text('가까운 스테이션 안내', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                          SizedBox(height: 16),
-                          Text(
-                            '53m',
-                            style: TextStyle(color: Color.fromRGBO(0, 227, 147, 1), fontSize: 34, fontWeight: FontWeight.bold),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('내 주변 스테이션', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                              SizedBox(height: 16),
+                              Text(
+                                '53m',
+                                style: TextStyle(color: BRBRColors.highlight, fontSize: 34, fontWeight: FontWeight.bold),
+                              ),
+                              SizedBox(height: 2),
+                              Text('동탄 반송 3 스테이션', style: TextStyle(fontSize: 12)),
+                            ],
                           ),
-                          SizedBox(height: 4),
-                          Text('동탄 반송 3 스테이션', style: TextStyle(fontSize: 12)),
+                          Positioned(child: Icon(Icons.arrow_forward_ios, size: 18), right: 0, bottom: 0),
                         ],
                       ),
                     ],
                   ),
-                  padding: EdgeInsets.all(16),
+                  padding: EdgeInsets.only(top: 24, left: 16, right: 16, bottom: 16),
                 ),
               ),
             ),
           ],
         ),
+        SizedBox(height: 8),
         BRBRCard(
           child: Container(
             height: 100,

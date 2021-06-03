@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class FAQDetailPage extends StatelessWidget {
   final String header, contents;
 
-  FAQDetailPage({this.header, this.contents});
+  FAQDetailPage({required this.header, required this.contents});
 
   @override
   Widget build(BuildContext context) {

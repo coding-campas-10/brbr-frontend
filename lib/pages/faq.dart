@@ -20,18 +20,24 @@ class FAQPage extends StatelessWidget {
       body: FutureBuilder(
         initialData: [],
         future: _readFAQ('resources/faq.json'),
-        builder: (context, snapshot) => ListView.builder(
-          itemCount: snapshot.data.length,
-          itemBuilder: (context, index) {
-            String header = (snapshot.data[index] as Map)['header'], contents = (snapshot.data[index] as Map)['contents'];
-            return ListTile(
-              title: Text(header),
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => FAQDetailPage(header: header, contents: contents)));
+        builder: (context, snapshot) {
+          if (snapshot.data != null) {
+            return ListView.builder(
+              itemCount: (snapshot.data as List).length,
+              itemBuilder: (context, index) {
+                String header = ((snapshot.data as List)[index] as Map)['header'], contents = ((snapshot.data as List)[index] as Map)['contents'];
+                return ListTile(
+                  title: Text(header),
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => FAQDetailPage(header: header, contents: contents)));
+                  },
+                );
               },
             );
-          },
-        ),
+          } else {
+            return Center(child: Text('공지를 불러오는 데에 실패하였습니다!'));
+          }
+        },
       ),
     );
   }

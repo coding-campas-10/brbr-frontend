@@ -1,5 +1,6 @@
+import 'package:brbr/constants/colors.dart';
 import 'package:brbr/pages/home.dart';
-import 'package:brbr/pages/profile.dart';
+import 'package:brbr/pages/more.dart';
 import 'package:brbr/pages/search.dart';
 import 'package:flutter/material.dart';
 
@@ -9,11 +10,11 @@ class BRBRWrapper extends StatefulWidget {
 }
 
 class _BRBRWrapperState extends State<BRBRWrapper> {
-  final _pages = [HomePage(), SearchPage(), ProfilePage()], _appBars = [homePageAppBar(), searchPageAppbar(), profilePageAppbar()];
   int _pageIndex = 0;
 
   @override
   Widget build(BuildContext context) {
+    final _pages = [HomePage(), SearchPage(), MorePage()], _appBars = [homePageAppBar(context), null, null];
     return Scaffold(
       appBar: _appBars[_pageIndex],
       body: IndexedStack(
@@ -22,13 +23,13 @@ class _BRBRWrapperState extends State<BRBRWrapper> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.home_outlined), activeIcon: Icon(Icons.home), label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.explore_outlined), activeIcon: Icon(Icons.explore), label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.menu), label: ''),
         ],
         showSelectedLabels: false,
         showUnselectedLabels: false,
-        selectedItemColor: Color.fromRGBO(0, 227, 147, 1),
+        selectedItemColor: BRBRColors.highlight,
         currentIndex: _pageIndex,
         onTap: (value) {
           setState(() {
