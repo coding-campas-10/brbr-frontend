@@ -41,7 +41,6 @@ class MorePage extends StatelessWidget {
 class _MoreActs extends StatelessWidget {
   final List<Map> _acts = [
     {'title': '계정', 'icon': Icon(Icons.person), 'link_page': ProfileSettingsPage()},
-    {'title': '알림', 'icon': Icon(Icons.notifications), 'link_page': NotificationsPage()},
     {'title': '권한', 'icon': Icon(Icons.accessibility), 'link_page': PermissionPage()},
     {'title': '고객 지원', 'icon': Icon(Icons.support_agent), 'link_page': SupportPage()},
     {'title': '약관 및 정책', 'icon': Icon(Icons.receipt_long), 'link_page': PolicyPage()},

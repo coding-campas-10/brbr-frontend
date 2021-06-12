@@ -1,17 +1,21 @@
 import 'package:brbr/constants/colors.dart';
+import 'package:brbr/models/brbr_user.dart';
+import 'package:brbr/pages/barcode.dart';
 import 'package:brbr/pages/my_point.dart';
 import 'package:brbr/pages/notice.dart';
-import 'package:brbr/pages/notifications.dart';
 import 'package:brbr/pages/user_report.dart';
 import 'package:brbr/widgets/brbr_card.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:provider/provider.dart';
 
 AppBar homePageAppBar(BuildContext context) {
   return AppBar(
     leading: IconButton(
       icon: Icon(Icons.qr_code_scanner),
-      onPressed: () {},
+      onPressed: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) => BarcodePage()));
+      },
     ),
     actions: [
       IconButton(
@@ -31,7 +35,7 @@ class HomePage extends StatelessWidget {
       padding: EdgeInsets.all(16),
       children: [
         Text(
-          '최진우님',
+          context.select<BRBRUser, String?>((user) => user.name) ?? '--',
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
         ),
         SizedBox(height: 8),
@@ -100,7 +104,7 @@ class HomePage extends StatelessWidget {
                 text: TextSpan(
                   style: TextStyle(color: Colors.black, fontSize: 20),
                   children: <TextSpan>[
-                    TextSpan(text: '최진우', style: TextStyle(fontWeight: FontWeight.bold)),
+                    TextSpan(text: context.select<BRBRUser, String?>((user) => user.name) ?? '--', style: TextStyle(fontWeight: FontWeight.bold)),
                     TextSpan(text: '님의 기록이에요'),
                   ],
                 ),

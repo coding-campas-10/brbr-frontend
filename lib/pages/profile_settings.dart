@@ -1,4 +1,4 @@
-import 'package:brbr/utils/services/brbr_auth.dart';
+import 'package:brbr/models/brbr_user.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,7 +13,7 @@ class ProfileSettingsPage extends StatelessWidget {
         child: MaterialButton(
           child: Text('로그아웃'),
           onPressed: () async {
-            await context.read<BRBRAuth>().logout();
+            await context.read<BRBRUser>().logout();
             Navigator.popUntil(context, (route) => route.isFirst);
           },
         ),

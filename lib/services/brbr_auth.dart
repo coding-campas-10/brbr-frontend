@@ -1,76 +1,187 @@
 import 'dart:async';
+import 'dart:convert';
+import 'package:async/async.dart';
 import 'package:brbr/constants/kakao_app_key.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
+import 'package:brbr/models/brbr_user.dart';
+import 'package:brbr/services/session/requests.dart';
 import 'package:flutter_kakao_login/flutter_kakao_login.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-enum LoginStatus { loggedIn, loggedOut }
+// enum LoginStatus { loggedIn, loggedOut }
 
-class BRBRAuth extends ChangeNotifier {
-  static BRBRAuth _instance = BRBRAuth._internal();
+class NoSuchUserException implements Exception {
+  String message;
+  KakaoAccountResult kakaoUser;
+  NoSuchUserException(this.message, this.kakaoUser);
+}
 
-  late SharedPreferences _sharedPreferences;
-  late LoginStatus _loginStatus;
-  String? _userId;
-  final FlutterKakaoLogin _kakaoSignIn = FlutterKakaoLogin();
-  bool _isLoaded = false;
+class BRBRService {
+  static final FlutterKakaoLogin _kakaoAuth = FlutterKakaoLogin();
+  static AsyncMemoizer _initMemo = AsyncMemoizer();
+  static bool _isInintialized = false;
+  BRBRService._();
 
-  BRBRAuth._internal();
-
-  String? get userId => _userId;
-
-  LoginStatus get loginStatus => _loginStatus;
-
-  void _setLoginStatus(LoginStatus status) {
-    _instance._loginStatus = status;
-    _instance.notifyListeners();
+  static Future<void> _init() async {
+    await _initMemo.runOnce(
+      () async {
+        await _kakaoAuth.init(kakaoNativeAppkey);
+        _isInintialized = true;
+      },
+    );
   }
 
-  void update() {
-    _instance.notifyListeners();
+  static String get _hostname {
+    String url = 'http://api.asdf.land';
+    return Requests.getHostname(url);
   }
 
-  get isLoaded => _isLoaded;
-  factory BRBRAuth.getInstance() {
-    if (_instance.isLoaded == false) {
-      _instance._init();
+  static Future<bool> isLoggedIn() async {
+    Map<String, String> cookies = await Requests.getStoredCookies(_hostname);
+    return cookies['connect.sid'] != null;
+  }
+
+  static Future<Response> register(int userId, String name) async {
+    Response response = await Requests.post('http://api.asdf.land/auth/register',
+        json: jsonEncode(
+          <String, dynamic>{
+            'user_id': userId,
+            'name': name,
+            'connected_at': DateTime.now().toString(),
+          },
+        ));
+    return response;
+  }
+
+  static Future<Response> logout() async {
+    Response response = await Requests.get('http://api.asdf.land/auth/logout');
+    Requests.clearStoredCookies(_hostname);
+    if (response.statusCode == 204) {
+      print('로그아웃');
     }
-    return _instance;
-  }
-  Future<void> _init() async {
-    _instance = BRBRAuth._internal();
-    await _instance._kakaoSignIn.init(kakaoNativeAppkey);
-    _instance._sharedPreferences = await SharedPreferences.getInstance();
-
-    _instance._userId = _instance._sharedPreferences.getString('user_id');
-    _instance._setLoginStatus(_instance._userId == null ? LoginStatus.loggedOut : LoginStatus.loggedIn);
-    _instance._isLoaded = true;
+    return response;
   }
 
-  Future<void> loginWithKakao() async {
-    if (_instance.loginStatus == LoginStatus.loggedOut) {
-      try {
-        await _instance._kakaoSignIn.logIn();
-        KakaoAccountResult? account = (await _instance._kakaoSignIn.getUserMe()).account;
-        _instance._userId = account!.userID;
-        print('카카오 로그인 성공' + _instance.userId!);
-        await _instance._sharedPreferences.setString('user_id', _instance.userId!);
-        _instance._setLoginStatus(LoginStatus.loggedIn);
-      } on PlatformException catch (e) {
-        print('카카오 로그인 실패');
-        print('${e.code} ${e.message}');
+  static Future<BRBRUser?> login() async {
+    KakaoAccountResult? kakaoResult = await _loginWithKakao();
+    if (kakaoResult != null) {
+      print('${kakaoResult.userID} 카카오 로그인 성공');
+      Response brbrLoginResponse = await _brbrLogin(int.parse(kakaoResult.userID!));
+      if (brbrLoginResponse.statusCode == 200) {
+        BRBRUser user = BRBRUser.fromJson(brbrLoginResponse.content());
+        print('${user.name} 버려버려 로그인 성공');
+        return user;
+      } else if (brbrLoginResponse.statusCode == 401) {
+        Requests.clearStoredCookies(_hostname);
+        throw NoSuchUserException(brbrLoginResponse.content(), kakaoResult);
       }
     }
   }
 
-  Future<void> logout() async {
-    _instance._sharedPreferences.remove('user_id');
-    _instance._userId = null;
-    print('로그 아웃');
-    _instance._setLoginStatus(LoginStatus.loggedOut);
+  static Future<Response> _brbrLogin(int userId) async {
+    Response response = await Requests.post(
+      'http://api.asdf.land/auth/login',
+      json: jsonEncode(
+        <String, dynamic>{
+          'user_id': userId,
+        },
+      ),
+    );
+    return response;
+  }
+
+  static Future<KakaoAccountResult?> _loginWithKakao() async {
+    if (!_isInintialized) {
+      await _init();
+    }
+    await _kakaoAuth.logIn();
+    return (await _kakaoAuth.getUserMe()).account;
+  }
+
+  static Future<BRBRUser?> getUserInfo() async {
+    Response response = await Requests.get('http://api.asdf.land/auth/info');
+    if (response.statusCode == 200) {
+      BRBRUser user = BRBRUser.fromJson(response.content());
+      print('${user.name}의 정보를 받아옴');
+      return user;
+    } else {
+      Requests.clearStoredCookies(_hostname);
+    }
+  }
+
+  static Future<String?> getBarcodeOTP() async {
+    Response response = await Requests.get('http://api.asdf.land/otp');
+    print(response.statusCode);
+    print(response.content());
+    print(response.headers);
+    if (response.statusCode == 200) {
+      return response.content();
+    }
   }
 }
+
+// class BRBRAuth extends ChangeNotifier {
+//   static BRBRAuth _instance = BRBRAuth._internal();
+
+//   late SharedPreferences _sharedPreferences;
+//   late LoginStatus _loginStatus;
+//   String? _userId;
+//   final FlutterKakaoLogin _kakaoSignIn = FlutterKakaoLogin();
+//   bool _isLoaded = false;
+
+//   BRBRAuth._internal();
+
+//   String? get userId => _userId;
+
+//   LoginStatus get loginStatus => _loginStatus;
+
+//   void _setLoginStatus(LoginStatus status) {
+//     _instance._loginStatus = status;
+//     _instance.notifyListeners();
+//   }
+
+//   void update() {
+//     _instance.notifyListeners();
+//   }
+
+//   get isLoaded => _isLoaded;
+//   factory BRBRAuth.getInstance() {
+//     if (_instance.isLoaded == false) {
+//       _instance._init();
+//     }
+//     return _instance;
+//   }
+//   Future<void> _init() async {
+//     _instance = BRBRAuth._internal();
+//     await _instance._kakaoSignIn.init(kakaoNativeAppkey);
+//     _instance._sharedPreferences = await SharedPreferences.getInstance();
+
+//     _instance._userId = _instance._sharedPreferences.getString('user_id');
+//     _instance._setLoginStatus(_instance._userId == null ? LoginStatus.loggedOut : LoginStatus.loggedIn);
+//     _instance._isLoaded = true;
+//   }
+
+//   Future<void> loginWithKakao() async {
+//     if (_instance.loginStatus == LoginStatus.loggedOut) {
+//       try {
+//         await _instance._kakaoSignIn.logIn();
+//         KakaoAccountResult? account = (await _instance._kakaoSignIn.getUserMe()).account;
+//         _instance._userId = account!.userID;
+//         print('카카오 로그인 성공' + _instance.userId!);
+//         await _instance._sharedPreferences.setString('user_id', _instance.userId!);
+//         _instance._setLoginStatus(LoginStatus.loggedIn);
+//       } on PlatformException catch (e) {
+//         print('카카오 로그인 실패');
+//         print('${e.code} ${e.message}');
+//       }
+//     }
+//   }
+
+//   Future<void> logout() async {
+//     _instance._sharedPreferences.remove('user_id');
+//     _instance._userId = null;
+//     print('로그 아웃');
+//     _instance._setLoginStatus(LoginStatus.loggedOut);
+//   }
+// }
 
 // class LoginPage extends StatefulWidget {
 //   @override

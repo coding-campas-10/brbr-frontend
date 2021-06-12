@@ -1,4 +1,6 @@
-import 'package:brbr/utils/services/brbr_auth.dart';
+import 'package:brbr/models/brbr_user.dart';
+import 'package:brbr/pages/register.dart';
+import 'package:brbr/services/brbr_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -15,20 +17,21 @@ class _LoginPageState extends State<LoginPage> {
         title: Text('로그인'),
       ),
       body: Center(
-        child: Consumer<BRBRAuth>(
-          builder: (context, value, child) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                MaterialButton(
-                  onPressed: () {
-                    value.loginWithKakao();
-                  },
-                  child: Text('카카오로 로그인'),
-                ),
-              ],
-            );
-          },
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            MaterialButton(
+              onPressed: () async {
+                try {
+                  await context.read<BRBRUser>().login();
+                } on NoSuchUserException catch (e) {
+                  print(e.message);
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterPage(int.parse(e.kakaoUser.userID!), e.kakaoUser.userNickname!)));
+                }
+              },
+              child: Text('카카오로 로그인'),
+            ),
+          ],
         ),
       ),
     );

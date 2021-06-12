@@ -34,6 +34,12 @@ dependencies:
   provider: ^5.0.0
   shared_preferences: ^2.0.6
   intl: ^0.17.0
+  http: ^0.13.3
+  hex: ^0.2.0
+  crypto: ^3.0.1
+  logging: ^1.0.1
+  async: ^2.6.1
+  flutter_svg: ^0.22.0
 
 dev_dependencies:
   flutter_test:
@@ -53,6 +59,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - resources/
+    - assets/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

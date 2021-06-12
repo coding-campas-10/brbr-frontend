@@ -1,6 +1,7 @@
+import 'package:brbr/models/brbr_user.dart';
 import 'package:brbr/pages/login.dart';
 import 'package:brbr/pages/wrapper.dart';
-import 'package:brbr/utils/services/brbr_auth.dart';
+import 'package:brbr/services/brbr_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -12,11 +13,37 @@ void main() async {
 }
 
 class BRBRApp extends StatelessWidget {
+  Widget _loadingPage() {
+    return Scaffold(
+      body: Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
+  }
+
+  Future<Widget> _loginSequence(BuildContext context) async {
+    if (context.read<BRBRUser>().userId != null) {
+      return BRBRWrapper();
+    }
+    bool isLoggedIn = await BRBRService.isLoggedIn();
+    if (isLoggedIn) {
+      BRBRUser? user = await BRBRService.getUserInfo();
+      if (user != null) {
+        context.read<BRBRUser>().updateUserInfo(user);
+        return BRBRWrapper();
+      }
+      return _loadingPage();
+    }
+    return LoginPage();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider.value(value: BRBRAuth.getInstance()),
+        ChangeNotifierProvider(
+          create: (context) => BRBRUser(),
+        ),
       ],
       child: MaterialApp(
         title: '버려버려',
@@ -33,22 +60,17 @@ class BRBRApp extends StatelessWidget {
           ),
           scaffoldBackgroundColor: Colors.white,
         ),
-        home: Consumer<BRBRAuth>(
-          builder: (context, value, child) {
-            if (value.isLoaded) {
-              if (value.loginStatus == LoginStatus.loggedOut) {
-                return LoginPage();
+        home: Consumer<BRBRUser>(
+          builder: (context, user, child) => FutureBuilder(
+            future: _loginSequence(context),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return snapshot.data as Widget;
               } else {
-                return BRBRWrapper();
+                return _loadingPage();
               }
-            } else {
-              return Scaffold(
-                body: Center(
-                  child: CircularProgressIndicator(),
-                ),
-              );
-            }
-          },
+            },
+          ),
         ),
       ),
     );
