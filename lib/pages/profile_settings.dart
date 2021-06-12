@@ -9,13 +9,27 @@ class ProfileSettingsPage extends StatelessWidget {
       appBar: AppBar(
         title: Text('내 프로필'),
       ),
-      body: Center(
-        child: MaterialButton(
-          child: Text('로그아웃'),
-          onPressed: () async {
-            await context.read<BRBRUser>().logout();
-            Navigator.popUntil(context, (route) => route.isFirst);
-          },
+      body: Container(
+        width: double.infinity,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            MaterialButton(
+              child: Text('로그아웃'),
+              onPressed: () async {
+                await context.read<BRBRUser>().logout();
+                Navigator.popUntil(context, (route) => route.isFirst);
+              },
+            ),
+            MaterialButton(
+              child: Text('회원 탈퇴', style: TextStyle(color: Colors.red)),
+              onPressed: () async {
+                await context.read<BRBRUser>().leave();
+                Navigator.popUntil(context, (route) => route.isFirst);
+              },
+            ),
+          ],
         ),
       ),
     );

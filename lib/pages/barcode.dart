@@ -1,9 +1,20 @@
+import 'dart:convert';
 import 'dart:ui';
 
-import 'package:brbr/services/brbr_auth.dart';
+import 'package:brbr/services/brbr_service.dart';
 import 'package:brbr/widgets/brbr_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
+class BRBRBarcode {
+  late String svg, otp;
+  BRBRBarcode(this.svg, this.otp);
+  BRBRBarcode.fromJson(String src) {
+    Map<String, dynamic> srcMap = jsonDecode(src);
+    svg = srcMap['svg']!;
+    otp = srcMap['code']!;
+  }
+}
 
 class BarcodePage extends StatelessWidget {
   @override
@@ -14,7 +25,7 @@ class BarcodePage extends StatelessWidget {
         future: BRBRService.getBarcodeOTP(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            String barcode = (snapshot.data as String);
+            BRBRBarcode barcode = (snapshot.data as BRBRBarcode);
             return Container(
               width: double.infinity,
               child: Column(
@@ -24,8 +35,8 @@ class BarcodePage extends StatelessWidget {
                   BRBRCard(
                     child: Column(
                       children: [
-                        SvgPicture.string(barcode),
-                        Text('BL75EYMM6S'),
+                        SvgPicture.string(barcode.svg),
+                        Text(barcode.otp),
                         SizedBox(height: 8),
                       ],
                     ),

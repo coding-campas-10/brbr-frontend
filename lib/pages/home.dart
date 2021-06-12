@@ -2,7 +2,7 @@ import 'package:brbr/constants/colors.dart';
 import 'package:brbr/models/brbr_user.dart';
 import 'package:brbr/pages/barcode.dart';
 import 'package:brbr/pages/my_point.dart';
-import 'package:brbr/pages/notice.dart';
+import 'package:brbr/pages/announce.dart';
 import 'package:brbr/pages/user_report.dart';
 import 'package:brbr/widgets/brbr_card.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +21,7 @@ AppBar homePageAppBar(BuildContext context) {
       IconButton(
         icon: Icon(Icons.notifications_none),
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => NoticePage()));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => AnnouncePage()));
         },
       )
     ],

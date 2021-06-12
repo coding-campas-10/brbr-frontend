@@ -1,6 +1,6 @@
 import 'package:brbr/models/brbr_user.dart';
-import 'package:brbr/services/brbr_auth.dart';
-import 'package:brbr/services/session/requests.dart';
+import 'package:brbr/services/brbr_service.dart';
+import 'package:brbr/services/requests/requests.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

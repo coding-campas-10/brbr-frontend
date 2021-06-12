@@ -1,6 +1,6 @@
 import 'dart:convert';
-
-import 'package:brbr/services/brbr_auth.dart';
+import 'package:brbr/services/brbr_service.dart';
+import 'package:brbr/services/requests/requests.dart';
 import 'package:flutter/material.dart';
 
 class BRBRUser extends ChangeNotifier {
@@ -42,6 +42,13 @@ class BRBRUser extends ChangeNotifier {
   Future<void> logout() async {
     await BRBRService.logout();
     updateUserInfo(BRBRUser());
+  }
+
+  Future<void> leave() async {
+    Response response = await BRBRService.leave();
+    if (response.statusCode == 204) {
+      updateUserInfo(BRBRUser());
+    }
   }
 
   void updateUserInfo(BRBRUser user) {

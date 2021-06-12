@@ -1,5 +1,4 @@
 import 'package:brbr/pages/faq.dart';
-import 'package:brbr/pages/notifications.dart';
 import 'package:brbr/pages/permision.dart';
 import 'package:brbr/pages/policy.dart';
 import 'package:brbr/pages/profile_settings.dart';

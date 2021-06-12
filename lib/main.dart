@@ -1,7 +1,7 @@
 import 'package:brbr/models/brbr_user.dart';
 import 'package:brbr/pages/login.dart';
 import 'package:brbr/pages/wrapper.dart';
-import 'package:brbr/services/brbr_auth.dart';
+import 'package:brbr/services/brbr_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';

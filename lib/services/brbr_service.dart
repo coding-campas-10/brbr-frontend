@@ -2,8 +2,11 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:async/async.dart';
 import 'package:brbr/constants/kakao_app_key.dart';
+import 'package:brbr/models/brbr_receipt.dart';
 import 'package:brbr/models/brbr_user.dart';
-import 'package:brbr/services/session/requests.dart';
+import 'package:brbr/pages/announce.dart';
+import 'package:brbr/pages/barcode.dart';
+import 'package:brbr/services/requests/requests.dart';
 import 'package:flutter_kakao_login/flutter_kakao_login.dart';
 
 // enum LoginStatus { loggedIn, loggedOut }
@@ -40,19 +43,23 @@ class BRBRService {
   }
 
   static Future<Response> register(int userId, String name) async {
-    Response response = await Requests.post('http://api.asdf.land/auth/register',
-        json: jsonEncode(
-          <String, dynamic>{
-            'user_id': userId,
-            'name': name,
-            'connected_at': DateTime.now().toString(),
-          },
-        ));
+    Response response = await Requests.post(
+      'http://api.asdf.land/auth/register',
+      json: jsonEncode(
+        <String, dynamic>{
+          'user_id': userId,
+          'name': name,
+          'connected_at': DateTime.now().toString(),
+        },
+      ),
+    );
+    print('BRBR서버에 /auth/register 요청');
     return response;
   }
 
   static Future<Response> logout() async {
     Response response = await Requests.get('http://api.asdf.land/auth/logout');
+    print('BRBR서버에 /auth/logout 요청');
     Requests.clearStoredCookies(_hostname);
     if (response.statusCode == 204) {
       print('로그아웃');
@@ -76,6 +83,16 @@ class BRBRService {
     }
   }
 
+  static Future<Response> leave() async {
+    Response response = await Requests.delete('http://api.asdf.land/auth/leave');
+    print('BRBR서버에 /auth/leave 요청');
+    if (response.statusCode == 204) {
+      print('회훤 탈퇴 성공');
+      Requests.clearStoredCookies(_hostname);
+    }
+    return response;
+  }
+
   static Future<Response> _brbrLogin(int userId) async {
     Response response = await Requests.post(
       'http://api.asdf.land/auth/login',
@@ -85,6 +102,7 @@ class BRBRService {
         },
       ),
     );
+    print('BRBR서버에 /auth/login 요청');
     return response;
   }
 
@@ -98,6 +116,7 @@ class BRBRService {
 
   static Future<BRBRUser?> getUserInfo() async {
     Response response = await Requests.get('http://api.asdf.land/auth/info');
+    print('BRBR서버에 /auth/info 요청');
     if (response.statusCode == 200) {
       BRBRUser user = BRBRUser.fromJson(response.content());
       print('${user.name}의 정보를 받아옴');
@@ -107,81 +126,47 @@ class BRBRService {
     }
   }
 
-  static Future<String?> getBarcodeOTP() async {
+  static Future<BRBRBarcode?> getBarcodeOTP() async {
     Response response = await Requests.get('http://api.asdf.land/otp');
-    print(response.statusCode);
-    print(response.content());
-    print(response.headers);
+    print('BRBR서버에 /otp 요청');
     if (response.statusCode == 200) {
-      return response.content();
+      BRBRBarcode barcode = BRBRBarcode.fromJson(response.content());
+      print('바코드를 성공적으로 불러옴(OTP : ${barcode.otp})');
+      return barcode;
     }
   }
+
+  static Future<List<BRBRAnnounce>?> getAnnounce() async {
+    Response response = await Requests.get('http://api.asdf.land/announce/all');
+    print('BRBR서버에 /announce/all 요청');
+    if (response.statusCode == 200) {
+      List<dynamic> datas = jsonDecode(response.content())['announce'];
+      List<BRBRAnnounce> announces = datas.map((e) => BRBRAnnounce.fromMap(e as Map<String, dynamic>)).toList();
+      print('공지를 성공적으로 불러옴');
+      return announces;
+    }
+  }
+
+  static Future<List<BRBRReceipt>?> getAllReceipt() async {
+    Response response = await Requests.get('http://api.asdf.land/wallet/wallet');
+    print('BRBR서버에 wallet/wallet 요청');
+    if (response.statusCode == 200) {
+      List<dynamic> datas = jsonDecode(response.content());
+      List<BRBRReceipt> receipts = datas.map((e) => BRBRReceipt.fromMap(e as Map<String, dynamic>)).toList();
+      print('사용 내역을 성공적으로 불러옴');
+      return receipts;
+    }
+  }
+
+  static Future<Response> getMostVisitedStation() async {
+    Response response = await Requests.get('http://api.asdf.land/wallet/most-visited');
+    print('BRBR서버에 /most-visited 요청');
+    if (response.statusCode == 200) {
+      print('가장 많이 방문한 스테이션을 성공적으로 불러옴');
+    }
+    return response;
+  }
 }
-
-// class BRBRAuth extends ChangeNotifier {
-//   static BRBRAuth _instance = BRBRAuth._internal();
-
-//   late SharedPreferences _sharedPreferences;
-//   late LoginStatus _loginStatus;
-//   String? _userId;
-//   final FlutterKakaoLogin _kakaoSignIn = FlutterKakaoLogin();
-//   bool _isLoaded = false;
-
-//   BRBRAuth._internal();
-
-//   String? get userId => _userId;
-
-//   LoginStatus get loginStatus => _loginStatus;
-
-//   void _setLoginStatus(LoginStatus status) {
-//     _instance._loginStatus = status;
-//     _instance.notifyListeners();
-//   }
-
-//   void update() {
-//     _instance.notifyListeners();
-//   }
-
-//   get isLoaded => _isLoaded;
-//   factory BRBRAuth.getInstance() {
-//     if (_instance.isLoaded == false) {
-//       _instance._init();
-//     }
-//     return _instance;
-//   }
-//   Future<void> _init() async {
-//     _instance = BRBRAuth._internal();
-//     await _instance._kakaoSignIn.init(kakaoNativeAppkey);
-//     _instance._sharedPreferences = await SharedPreferences.getInstance();
-
-//     _instance._userId = _instance._sharedPreferences.getString('user_id');
-//     _instance._setLoginStatus(_instance._userId == null ? LoginStatus.loggedOut : LoginStatus.loggedIn);
-//     _instance._isLoaded = true;
-//   }
-
-//   Future<void> loginWithKakao() async {
-//     if (_instance.loginStatus == LoginStatus.loggedOut) {
-//       try {
-//         await _instance._kakaoSignIn.logIn();
-//         KakaoAccountResult? account = (await _instance._kakaoSignIn.getUserMe()).account;
-//         _instance._userId = account!.userID;
-//         print('카카오 로그인 성공' + _instance.userId!);
-//         await _instance._sharedPreferences.setString('user_id', _instance.userId!);
-//         _instance._setLoginStatus(LoginStatus.loggedIn);
-//       } on PlatformException catch (e) {
-//         print('카카오 로그인 실패');
-//         print('${e.code} ${e.message}');
-//       }
-//     }
-//   }
-
-//   Future<void> logout() async {
-//     _instance._sharedPreferences.remove('user_id');
-//     _instance._userId = null;
-//     print('로그 아웃');
-//     _instance._setLoginStatus(LoginStatus.loggedOut);
-//   }
-// }
 
 // class LoginPage extends StatefulWidget {
 //   @override

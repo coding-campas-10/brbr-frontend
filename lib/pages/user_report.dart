@@ -1,9 +1,14 @@
 import 'package:brbr/constants/colors.dart';
+import 'package:brbr/services/brbr_service.dart';
 import 'package:brbr/widgets/brbr_card.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class UserReportPage extends StatelessWidget {
+  UserReportPage() {
+    // BRBRService.getMostVisitedStation().then((value) => print(value?.content()));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,8 +80,6 @@ class UserReportPage extends StatelessWidget {
 }
 
 class OverviewReport extends StatelessWidget {
-  const OverviewReport({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Column(
