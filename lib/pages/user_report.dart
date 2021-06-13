@@ -1,5 +1,4 @@
 import 'package:brbr/constants/colors.dart';
-import 'package:brbr/services/brbr_service.dart';
 import 'package:brbr/widgets/brbr_card.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
@@ -73,6 +72,8 @@ class UserReportPage extends StatelessWidget {
               ),
             ],
           ),
+          Image.asset('assets/trash_percentage.png', width: double.infinity),
+          Image.asset('assets/trash_report.png'),
         ],
       ),
     );

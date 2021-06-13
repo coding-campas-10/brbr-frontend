@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:ui';
 
+import 'package:brbr/constants/colors.dart';
 import 'package:brbr/services/brbr_service.dart';
 import 'package:brbr/widgets/brbr_card.dart';
 import 'package:flutter/material.dart';
@@ -28,22 +29,30 @@ class BarcodePage extends StatelessWidget {
             BRBRBarcode barcode = (snapshot.data as BRBRBarcode);
             return Container(
               width: double.infinity,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  BRBRCard(
-                    child: Column(
-                      children: [
-                        SvgPicture.string(barcode.svg),
-                        Text(barcode.otp),
-                        SizedBox(height: 8),
-                      ],
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 24),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    BRBRCard(
+                      padding: EdgeInsets.fromLTRB(8, 16, 8, 8),
+                      child: Column(
+                        children: [
+                          SvgPicture.string(barcode.svg),
+                          Text(barcode.otp.toUpperCase()),
+                          SizedBox(height: 8),
+                        ],
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 24),
-                  Text('스테이션에 바코드를 태그하고 \n작은 변화를 실천해 보세요!', textAlign: TextAlign.center),
-                ],
+                    SizedBox(height: 24),
+                    Text(
+                      '스테이션에 바코드를 태그하고 \n작은 변화를 실천해 보세요!',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: BRBRColors.secondaryText),
+                    ),
+                  ],
+                ),
               ),
             );
           } else {

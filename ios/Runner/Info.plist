@@ -29,6 +29,8 @@
 		<string>storykompassauth</string>
 		<string>kakaolink</string>
 		<string>storylink</string>
+		<string>https</string>
+		<string>http</string>
 	</array>
 	<key>CFBundleURLTypes</key>
 	<array>

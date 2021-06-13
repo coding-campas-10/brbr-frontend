@@ -6,8 +6,10 @@ import 'package:brbr/pages/support.dart';
 import 'package:brbr/pages/version_info.dart';
 import 'package:brbr/widgets/brbr_card.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MorePage extends StatelessWidget {
+  final String _adUrl = 'https://www.jakorea.org/front/community/user/noticeview.do?seq=1306&pseq=&searchText=hackathon&cPage=1&flag=&navDepth1=1&navDepth2=1&board_subtype=';
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -26,10 +28,10 @@ class MorePage extends StatelessWidget {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 16),
           child: BRBRCard(
-            child: Container(
-              height: 100,
-              child: Center(child: Text('배너 영역')),
-            ),
+            child: Image.asset('assets/brbr_ad.png'),
+            onTab: () async {
+              await canLaunch(_adUrl) ? await launch(_adUrl) : print('링크로 이동할 수 없음');
+            },
           ),
         ),
       ],
