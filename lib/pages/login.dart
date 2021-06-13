@@ -4,7 +4,6 @@ import 'package:brbr/pages/register.dart';
 import 'package:brbr/services/brbr_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
@@ -33,9 +32,9 @@ class _LoginPageState extends State<LoginPage> {
                       height: 80,
                     ),
                     SizedBox(height: 48),
-                    Text('지금 널 버리러 가', style: TextStyle(color: BRBRColors.highlightText, fontWeight: FontWeight.bold, fontSize: 24)),
+                    Text('지금 널 버리러 가', style: TextStyle(color: BRBRColors.highlightText, fontWeight: FontWeight.bold, fontSize: 24, fontFamily: 'GmarketSans')),
                     SizedBox(height: 8),
-                    Text('버려버려', style: TextStyle(color: BRBRColors.highlight, fontWeight: FontWeight.bold, fontSize: 60)),
+                    Text('버려버려', style: TextStyle(color: BRBRColors.highlight, fontWeight: FontWeight.w700, fontSize: 60, fontFamily: 'GmarketSans')),
                     SizedBox(height: 250),
                     MaterialButton(
                       height: 50,
