@@ -9,11 +9,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class BRBRBarcode {
   late String svg, otp;
+  late DateTime expire;
   BRBRBarcode(this.svg, this.otp);
   BRBRBarcode.fromJson(String src) {
     Map<String, dynamic> srcMap = jsonDecode(src);
     svg = srcMap['svg']!;
     otp = srcMap['code']!;
+    expire = DateTime.parse(srcMap['ttl']).toLocal();
   }
 }
 

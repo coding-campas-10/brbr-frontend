@@ -72,8 +72,25 @@ class UserReportPage extends StatelessWidget {
               ),
             ],
           ),
-          Image.asset('assets/trash_percentage.png', width: double.infinity),
-          Image.asset('assets/trash_report.png'),
+          SizedBox(height: 8),
+          BRBRCard(child: Image.asset('assets/trash_percentage.png', width: double.infinity)),
+          SizedBox(height: 8),
+          BRBRCard(child: Image.asset('assets/trash_report.png')),
+          SizedBox(height: 4),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 26),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Text('5월 1주', style: TextStyle(fontSize: 11)),
+                Text('5월 2주', style: TextStyle(fontSize: 11)),
+                Text('5월 3주', style: TextStyle(fontSize: 11)),
+                Text('6월 1주', style: TextStyle(fontSize: 11)),
+                Text('6월 2주', style: TextStyle(fontSize: 11)),
+                Text('6월 3주', style: TextStyle(fontSize: 11)),
+              ],
+            ),
+          )
         ],
       ),
     );

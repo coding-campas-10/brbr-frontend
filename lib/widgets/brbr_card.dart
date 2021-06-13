@@ -14,13 +14,13 @@ class BRBRCard extends StatelessWidget {
       elevation: 10,
       color: Colors.transparent,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      shadowColor: Color.fromRGBO(0, 0, 0, 0.4),
+      shadowColor: Color.fromRGBO(0, 0, 0, 0.3),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(10),
         child: Material(
           color: backgroundColor,
           child: InkWell(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(10),
             onTap: onTab,
             child: Padding(
               padding: padding,
