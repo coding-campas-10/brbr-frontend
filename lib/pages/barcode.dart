@@ -23,46 +23,63 @@ class BarcodePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      body: FutureBuilder(
-        future: BRBRService.getBarcodeOTP(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            BRBRBarcode barcode = (snapshot.data as BRBRBarcode);
-            return Container(
-              width: double.infinity,
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    BRBRCard(
-                      padding: EdgeInsets.fromLTRB(8, 16, 8, 8),
-                      child: Column(
-                        children: [
-                          SvgPicture.string(barcode.svg),
-                          Text(barcode.otp.toUpperCase()),
-                          SizedBox(height: 8),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 24),
-                    Text(
-                      '스테이션에 바코드를 태그하고 \n작은 변화를 실천해 보세요!',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: BRBRColors.secondaryText),
-                    ),
-                  ],
-                ),
+      body: SafeArea(
+        child: Stack(
+          children: [
+            Positioned(
+              right: 16,
+              top: 16,
+              child: IconButton(
+                icon: Icon(Icons.close),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
               ),
-            );
-          } else {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-        },
+            ),
+            Positioned.fill(
+              child: FutureBuilder(
+                future: BRBRService.getBarcodeOTP(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    BRBRBarcode barcode = (snapshot.data as BRBRBarcode);
+                    return Container(
+                      width: double.infinity,
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 24),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            BRBRCard(
+                              padding: EdgeInsets.fromLTRB(8, 16, 8, 8),
+                              child: Column(
+                                children: [
+                                  SvgPicture.string(barcode.svg),
+                                  Text(barcode.otp.toUpperCase()),
+                                  SizedBox(height: 8),
+                                ],
+                              ),
+                            ),
+                            SizedBox(height: 24),
+                            Text(
+                              '스테이션에 바코드를 태그하고 \n작은 변화를 실천해 보세요!',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(color: BRBRColors.secondaryText),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  } else {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
