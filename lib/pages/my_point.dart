@@ -52,7 +52,7 @@ class MyPointPage extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(height: 40),
+          SizedBox(height: 32),
           Column(
             children: pointList.map((e) => PointListtile(e)).toList(),
           ),

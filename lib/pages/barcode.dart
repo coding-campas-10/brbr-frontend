@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:ui';
 
@@ -19,7 +20,12 @@ class BRBRBarcode {
   }
 }
 
-class BarcodePage extends StatelessWidget {
+class BarcodePage extends StatefulWidget {
+  @override
+  _BarcodePageState createState() => _BarcodePageState();
+}
+
+class _BarcodePageState extends State<BarcodePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,24 +53,38 @@ class BarcodePage extends StatelessWidget {
                       child: Padding(
                         padding: EdgeInsets.symmetric(horizontal: 24),
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            BRBRCard(
-                              padding: EdgeInsets.fromLTRB(8, 16, 8, 8),
-                              child: Column(
-                                children: [
-                                  SvgPicture.string(barcode.svg),
-                                  Text(barcode.otp.toUpperCase()),
-                                  SizedBox(height: 8),
-                                ],
-                              ),
-                            ),
+                            BarcodeZone(barcode),
                             SizedBox(height: 24),
                             Text(
                               '스테이션에 바코드를 태그하고 \n작은 변화를 실천해 보세요!',
                               textAlign: TextAlign.center,
                               style: TextStyle(color: BRBRColors.secondaryText),
+                            ),
+                            SizedBox(height: 24),
+                            MaterialButton(
+                              textColor: Colors.white,
+                              color: BRBRColors.highlight,
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                              elevation: 0,
+                              child: Container(
+                                height: 48,
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Icon(Icons.refresh),
+                                    SizedBox(width: 8),
+                                    Text('재발급 하기', style: TextStyle(fontSize: 16)),
+                                  ],
+                                ),
+                              ),
+                              onPressed: () {
+                                setState(() {});
+                              },
                             ),
                           ],
                         ),
@@ -81,6 +101,52 @@ class BarcodePage extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class BarcodeZone extends StatefulWidget {
+  final BRBRBarcode barcode;
+  BarcodeZone(this.barcode);
+
+  @override
+  _BarcodeZoneState createState() => _BarcodeZoneState();
+}
+
+class _BarcodeZoneState extends State<BarcodeZone> {
+  Duration _leftTime = Duration();
+  late Timer timer;
+
+  @override
+  initState() {
+    super.initState();
+    timer = Timer.periodic(Duration(milliseconds: 100), (timer) {
+      setState(() {
+        _leftTime = widget.barcode.expire.difference(DateTime.now());
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Text('남은시간 ${_leftTime.inSeconds}'),
+        BRBRCard(
+          padding: EdgeInsets.fromLTRB(8, 16, 8, 8),
+          child: Container(
+            width: double.infinity,
+            child: Column(
+              children: [
+                SvgPicture.string(widget.barcode.svg),
+                Text(widget.barcode.otp.toUpperCase()),
+                SizedBox(height: 8),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
