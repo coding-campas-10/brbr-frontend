@@ -1,7 +1,11 @@
 import 'package:brbr/constants/colors.dart';
+import 'package:brbr/models/brbr_receipt.dart';
+import 'package:brbr/models/brbr_user.dart';
 import 'package:brbr/widgets/brbr_card.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:provider/provider.dart';
 
 class UserReportPage extends StatelessWidget {
   UserReportPage() {
@@ -103,7 +107,7 @@ class OverviewReport extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('최진우님의 활동 기록', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+        Text('${context.select<BRBRUser, String?>((user) => user.name) ?? '--'}님의 활동 기록', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
         SizedBox(height: 24),
         LinearPercentIndicator(
           lineHeight: 16,
@@ -112,15 +116,22 @@ class OverviewReport extends StatelessWidget {
           progressColor: BRBRColors.highlight,
         ),
         SizedBox(height: 16),
-        RichText(
-          text: TextSpan(
-            style: TextStyle(color: Color.fromRGBO(170, 170, 170, 1), fontSize: 16),
-            children: <TextSpan>[
-              TextSpan(text: '500kg', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24, color: Colors.black)),
-              TextSpan(text: '/800kg'),
-            ],
-          ),
-        ),
+        Consumer<BRBRReceiptInfos>(
+          builder: (context, value, child) {
+            return RichText(
+              text: TextSpan(
+                style: TextStyle(color: Color.fromRGBO(170, 170, 170, 1), fontSize: 16),
+                children: <TextSpan>[
+                  TextSpan(
+                    text: '${value.getTotalWeight() != null ? (value.getTotalWeight()! ~/ 1000).toString() : '--'}kg',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24, color: Colors.black),
+                  ),
+                  TextSpan(text: '/800kg'),
+                ],
+              ),
+            );
+          },
+        )
       ],
     );
   }

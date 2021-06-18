@@ -1,0 +1,44 @@
+{
+	"stations": [
+		{
+			"location": {
+				"coordinates": [
+					127.06051261064815,
+					37.203902036649744
+				],
+				"type": "Point"
+			},
+			"station_id": 6
+		},
+		{
+			"location": {
+				"coordinates": [
+					127.06048987048854,
+					37.205797765366256
+				],
+				"type": "Point"
+			},
+			"station_id": 8
+		},
+		{
+			"location": {
+				"coordinates": [
+					127.05626592644637,
+					37.20921269086466
+				],
+				"type": "Point"
+			},
+			"station_id": 4
+		},
+		{
+			"location": {
+				"coordinates": [
+					127.06294806176356,
+					37.205302638453425
+				],
+				"type": "Point"
+			},
+			"station_id": 10
+		}
+	]
+}

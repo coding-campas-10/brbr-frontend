@@ -1,4 +1,5 @@
 import 'package:brbr/constants/colors.dart';
+import 'package:brbr/models/brbr_receipt.dart';
 import 'package:brbr/models/brbr_user.dart';
 import 'package:brbr/pages/barcode.dart';
 import 'package:brbr/pages/my_point.dart';
@@ -6,6 +7,7 @@ import 'package:brbr/pages/announce.dart';
 import 'package:brbr/pages/user_report.dart';
 import 'package:brbr/widgets/brbr_card.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -93,13 +95,18 @@ class HomePage extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 4),
-                  Text(
-                    '23,200원',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  Consumer<BRBRReceiptInfos>(
+                    builder: (context, value, child) {
+                      // context.watch<BRBRReceiptInfos>().getTotalPoint() == null ? '--' : NumberFormat('###,###,###,###').format(context.read<BRBRReceiptInfos>().getTotalPoint() ?? '--'),
+                      return Text(
+                        value.getTotalPoint() != null ? NumberFormat('###,###,###,###').format(value.getTotalPoint()) : '--',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),
@@ -137,14 +144,18 @@ class HomePage extends StatelessWidget {
                 progressColor: BRBRColors.highlight,
               ),
               SizedBox(height: 16),
-              RichText(
-                text: TextSpan(
-                  style: TextStyle(color: Color.fromRGBO(170, 170, 170, 1), fontSize: 16),
-                  children: <TextSpan>[
-                    TextSpan(text: '500kg', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24, color: Colors.black)),
-                    TextSpan(text: '/800kg'),
-                  ],
-                ),
+              Consumer<BRBRReceiptInfos>(
+                builder: (context, value, child) {
+                  return RichText(
+                    text: TextSpan(
+                      style: TextStyle(color: Color.fromRGBO(170, 170, 170, 1), fontSize: 16),
+                      children: <TextSpan>[
+                        TextSpan(text: '${value.getTotalWeight() != null ? (value.getTotalWeight()! ~/ 1000).toString() : '--'}kg', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24, color: Colors.black)),
+                        TextSpan(text: '/800kg'),
+                      ],
+                    ),
+                  );
+                },
               ),
             ],
           ),

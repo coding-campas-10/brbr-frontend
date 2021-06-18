@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:async/async.dart';
 import 'package:brbr/constants/kakao_app_key.dart';
+import 'package:brbr/models/brbr_receipt.dart';
 // import 'package:brbr/models/brbr_receipt.dart';
 import 'package:brbr/models/brbr_user.dart';
 import 'package:brbr/pages/announce.dart';
@@ -62,7 +63,7 @@ class BRBRService {
     print('BRBR서버에 /auth/logout 요청');
     Requests.clearStoredCookies(_hostname);
     if (response.statusCode == 204) {
-      print('로그아웃');
+      print('로그아웃 됨');
     }
     return response;
   }
@@ -147,16 +148,16 @@ class BRBRService {
     }
   }
 
-  // static Future<List<BRBRReceipt>?> getAllReceipt() async {
-  //   Response response = await Requests.get('http://api.asdf.land/wallet/wallet');
-  //   print('BRBR서버에 wallet/wallet 요청');
-  //   if (response.statusCode == 200) {
-  //     List<dynamic> datas = jsonDecode(response.content());
-  //     List<BRBRReceipt> receipts = datas.map((e) => BRBRReceipt.fromMap(e as Map<String, dynamic>)).toList();
-  //     print('사용 내역을 성공적으로 불러옴');
-  //     return receipts;
-  //   }
-  // }
+  static Future<List<BRBRReceipt>?> getAllReceipt() async {
+    Response response = await Requests.get('http://api.asdf.land/wallet');
+    print('BRBR서버에 wallet/wallet 요청');
+    if (response.statusCode == 200) {
+      List<dynamic> datas = jsonDecode(response.content());
+      List<BRBRReceipt> receipts = datas.map((e) => BRBRReceipt.fromMap(e as Map<String, dynamic>)).toList();
+      print('사용 내역을 성공적으로 불러옴');
+      return receipts;
+    }
+  }
 
   static Future<Response> getMostVisitedStation() async {
     Response response = await Requests.get('http://api.asdf.land/wallet/most-visited');

@@ -1,4 +1,5 @@
 import 'package:brbr/constants/colors.dart';
+import 'package:brbr/models/brbr_receipt.dart';
 import 'package:brbr/models/brbr_user.dart';
 import 'package:brbr/pages/register.dart';
 import 'package:brbr/services/brbr_service.dart';
@@ -44,6 +45,7 @@ class _LoginPageState extends State<LoginPage> {
                       onPressed: () async {
                         try {
                           await context.read<BRBRUser>().login();
+                          context.read<BRBRReceiptInfos>().update();
                         } on NoSuchUserException catch (e) {
                           print(e.message);
                           Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterPage(int.parse(e.kakaoUser.userID!), e.kakaoUser.userNickname!)));

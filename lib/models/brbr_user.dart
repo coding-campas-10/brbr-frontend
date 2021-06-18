@@ -5,9 +5,10 @@ import 'package:flutter/material.dart';
 
 class BRBRUser extends ChangeNotifier {
   int? _userId;
-  String? _name, _connectedAt;
+  String? _name;
+  DateTime? _connectedAt;
 
-  BRBRUser.config(int userId, String name, String connectedAt) {
+  BRBRUser.config(int userId, String name, DateTime connectedAt) {
     _userId = userId;
     _name = name;
     _connectedAt = connectedAt;
@@ -17,7 +18,7 @@ class BRBRUser extends ChangeNotifier {
     Map<String, dynamic> srcMap = jsonDecode(src);
     _userId = srcMap['user_id'];
     _name = srcMap['name'];
-    _connectedAt = srcMap['connected_at'];
+    _connectedAt = DateTime.parse(srcMap['connected_at']);
   }
 
   BRBRUser();
@@ -30,7 +31,7 @@ class BRBRUser extends ChangeNotifier {
     notifyListeners();
   }
 
-  String? get connectedAt => _connectedAt;
+  DateTime? get connectedAt => _connectedAt;
 
   Future<void> login() async {
     BRBRUser? loginResult = await BRBRService.login();

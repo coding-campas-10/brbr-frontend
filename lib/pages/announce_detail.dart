@@ -30,7 +30,7 @@ class AnnounceDetailPage extends StatelessWidget {
                     SizedBox(height: 88),
                     Text(
                       title,
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 34),
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 28),
                     ),
                     SizedBox(height: 24),
                     Text(contents, style: TextStyle(fontSize: 16, height: 1.3, color: Color.fromRGBO(0, 0, 0, 0.87))),

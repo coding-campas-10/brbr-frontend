@@ -1,3 +1,4 @@
+import 'package:brbr/models/brbr_receipt.dart';
 import 'package:brbr/models/brbr_user.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -19,6 +20,7 @@ class ProfileSettingsPage extends StatelessWidget {
               child: Text('로그아웃'),
               onPressed: () async {
                 await context.read<BRBRUser>().logout();
+                context.read<BRBRReceiptInfos>().clearInfos();
                 Navigator.popUntil(context, (route) => route.isFirst);
               },
             ),

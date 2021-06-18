@@ -1,3 +1,4 @@
+import 'package:brbr/models/brbr_receipt.dart';
 import 'package:brbr/models/brbr_user.dart';
 import 'package:brbr/pages/login.dart';
 import 'package:brbr/pages/wrapper.dart';
@@ -29,6 +30,7 @@ class BRBRApp extends StatelessWidget {
     if (isLoggedIn) {
       BRBRUser? user = await BRBRService.getUserInfo();
       if (user != null) {
+        context.read<BRBRReceiptInfos>().update();
         context.read<BRBRUser>().updateUserInfo(user);
         return BRBRWrapper();
       }
@@ -44,6 +46,9 @@ class BRBRApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => BRBRUser(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => BRBRReceiptInfos(),
+        )
       ],
       child: MaterialApp(
         title: '버려버려',
