@@ -57,12 +57,6 @@ class _BarcodePageState extends State<BarcodePage> {
                           children: [
                             BarcodeZone(barcode),
                             SizedBox(height: 24),
-                            Text(
-                              '스테이션에 바코드를 태그하고 \n작은 변화를 실천해 보세요!',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(color: BRBRColors.secondaryText),
-                            ),
-                            SizedBox(height: 24),
                             MaterialButton(
                               textColor: Colors.white,
                               color: BRBRColors.highlight,
@@ -128,24 +122,46 @@ class _BarcodeZoneState extends State<BarcodeZone> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        Text('남은시간 ${_leftTime.inSeconds}'),
-        BRBRCard(
-          padding: EdgeInsets.fromLTRB(8, 16, 8, 8),
-          child: Container(
-            width: double.infinity,
-            child: Column(
-              children: [
-                SvgPicture.string(widget.barcode.svg),
-                Text(widget.barcode.otp.toUpperCase()),
-                SizedBox(height: 8),
-              ],
-            ),
-          ),
-        ),
-      ],
+    return Builder(
+      builder: (context) {
+        if (_leftTime < Duration()) {
+          return Text(
+            '바코드가 만료되었습니다.\n바코드를 재발급 해주세요',
+            style: TextStyle(fontSize: 20),
+          );
+        } else {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text('남은시간 ${_leftTime.inSeconds}'),
+                  BRBRCard(
+                    padding: EdgeInsets.fromLTRB(8, 16, 8, 8),
+                    child: Container(
+                      width: double.infinity,
+                      child: Column(
+                        children: [
+                          SvgPicture.string(widget.barcode.svg),
+                          Text(widget.barcode.otp.toUpperCase()),
+                          SizedBox(height: 8),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 24),
+                ],
+              ),
+              Text(
+                '스테이션에 바코드를 태그하고 \n작은 변화를 실천해 보세요!',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: BRBRColors.secondaryText),
+              ),
+            ],
+          );
+        }
+      },
     );
   }
 
