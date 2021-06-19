@@ -97,7 +97,6 @@ class HomePage extends StatelessWidget {
                   SizedBox(height: 4),
                   Consumer<BRBRReceiptInfos>(
                     builder: (context, value, child) {
-                      // context.watch<BRBRReceiptInfos>().getTotalPoint() == null ? '--' : NumberFormat('###,###,###,###').format(context.read<BRBRReceiptInfos>().getTotalPoint() ?? '--'),
                       return Text(
                         value.getTotalPoint() != null ? NumberFormat('###,###,###,###').format(value.getTotalPoint()) : '--',
                         style: TextStyle(

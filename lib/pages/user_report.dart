@@ -3,15 +3,10 @@ import 'package:brbr/models/brbr_receipt.dart';
 import 'package:brbr/models/brbr_user.dart';
 import 'package:brbr/widgets/brbr_card.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:provider/provider.dart';
 
 class UserReportPage extends StatelessWidget {
-  UserReportPage() {
-    // BRBRService.getMostVisitedStation().then((value) => print(value?.content()));
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

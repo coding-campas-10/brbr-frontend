@@ -1,7 +1,7 @@
 import 'package:brbr/constants/colors.dart';
 import 'package:brbr/pages/home.dart';
 import 'package:brbr/pages/more.dart';
-import 'package:brbr/pages/search.dart';
+import 'package:brbr/pages/explore.dart';
 import 'package:flutter/material.dart';
 
 class BRBRWrapper extends StatefulWidget {
@@ -14,7 +14,7 @@ class _BRBRWrapperState extends State<BRBRWrapper> {
 
   @override
   Widget build(BuildContext context) {
-    final _pages = [HomePage(), SearchPage(), MorePage()], _appBars = [homePageAppBar(context), null, null];
+    final _pages = [HomePage(), ExplorePage(), MorePage()], _appBars = [homePageAppBar(context), null, null];
     return Scaffold(
       appBar: _appBars[_pageIndex],
       body: IndexedStack(

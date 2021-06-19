@@ -25,9 +25,13 @@ class MyPointPage extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      '${receipts.getTotalPoint()?.toString() ?? '--'} 포인트',
-                      style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+                    Consumer<BRBRReceiptInfos>(
+                      builder: (context, value, child) {
+                        return Text(
+                          '${value.getTotalPoint() != null ? NumberFormat('###,###,###,###').format(value.getTotalPoint()) : '--'} 포인트',
+                          style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+                        );
+                      },
                     ),
                     MaterialButton(
                       highlightElevation: 0,
