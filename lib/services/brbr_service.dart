@@ -173,10 +173,16 @@ class BRBRService {
       List datats = jsonDecode(response.content())['stations'];
       List<StationLocation> stationLocations = datats.map((e) => StationLocation.fromMap(e)).toList();
       print('모든 스테이션의 위치를 성공적으로 불러옴');
-      for (var _stationLocation in stationLocations) {
-        print('id : ${_stationLocation.stationId}, lat : ${_stationLocation.latitude}, lon : ${_stationLocation.longtitude}');
-      }
       return stationLocations;
+    }
+  }
+
+  static Future<Station?> getDetailStation(int stationId) async {
+    Response response = await Requests.get('http://api.asdf.land/stations/$stationId');
+    print('BRBR서버에 stations/$stationId 요청');
+    if (response.statusCode == 200) {
+      print('id $stationId번의 스테이션 정보를 성공적으로 불러옴');
+      return Station.fromMap(jsonDecode(response.content()));
     }
   }
 }

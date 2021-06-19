@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:typed_data';
+import 'package:brbr/constants/colors.dart';
 import 'package:brbr/models/brbr_station.dart';
 import 'package:brbr/services/brbr_service.dart';
 import 'package:brbr/widgets/brbr_card.dart';
@@ -16,8 +17,9 @@ class ExplorePage extends StatefulWidget {
 class _ExplorePageState extends State<ExplorePage> {
   Completer<GoogleMapController> _controller = Completer();
   late Uint8List _markerIcon, _selectedMarkerIcon;
-  String? _selectedMarkerId;
+  int? _selectedStationId;
   List<StationLocation>? stationLocations;
+  Station? _selectedStation;
 
   static final CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(37.20098932396427, 127.07942375504356),
@@ -31,11 +33,13 @@ class _ExplorePageState extends State<ExplorePage> {
             (stationLocation) => Marker(
               markerId: MarkerId(stationLocation.stationId.toString()),
               position: LatLng(stationLocation.latitude, stationLocation.longtitude),
-              onTap: () {
-                _selectedMarkerId = stationLocation.stationId.toString();
+              onTap: () async {
+                _selectedStationId = stationLocation.stationId;
+                _selectedStation = await BRBRService.getDetailStation(_selectedStationId!);
+                print(_selectedStation!.stationName);
                 setState(() {});
               },
-              icon: BitmapDescriptor.fromBytes(_selectedMarkerId == stationLocation.stationId.toString() ? _selectedMarkerIcon : _markerIcon),
+              icon: BitmapDescriptor.fromBytes(_selectedStationId == stationLocation.stationId ? _selectedMarkerIcon : _markerIcon),
             ),
           )
           .toSet();
@@ -80,11 +84,20 @@ class _ExplorePageState extends State<ExplorePage> {
             _controller.complete(controller);
           },
         ),
-        Positioned(
-          bottom: 0,
-          left: 16,
-          right: 16,
-          child: StationFloatingCard(),
+        Builder(
+          builder: (context) {
+            if (_selectedStation != null) {
+              print('builder:' + _selectedStation!.stationName);
+              return Positioned(
+                bottom: 16,
+                left: 16,
+                right: 16,
+                child: StationFloatingCard(_selectedStation!),
+              );
+            } else {
+              return Container();
+            }
+          },
         ),
       ],
     );
@@ -92,8 +105,12 @@ class _ExplorePageState extends State<ExplorePage> {
 }
 
 class StationFloatingCard extends StatelessWidget {
+  final Station station;
+  StationFloatingCard(this.station);
+
   @override
   Widget build(BuildContext context) {
+    print('card builded ${station.stationName}');
     return BRBRCard(
       padding: EdgeInsets.all(16),
       child: Stack(
@@ -102,10 +119,17 @@ class StationFloatingCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text('동탄'),
-              Text('동탄'),
-              Text('동탄'),
+              Text(station.stationName, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+              SizedBox(height: 16),
+              Text(station.description, style: TextStyle(color: BRBRColors.secondaryText)),
+              SizedBox(height: 4),
+              Text('매주 월, 목, 토 10:00 수거', style: TextStyle(color: BRBRColors.secondaryText)),
             ],
+          ),
+          Positioned(
+            right: 0,
+            bottom: 0,
+            child: Text('68m', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: BRBRColors.highlight)),
           ),
         ],
       ),
