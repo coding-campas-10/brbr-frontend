@@ -13,84 +13,92 @@ class UserReportPage extends StatelessWidget {
       appBar: AppBar(
         title: Text('리포트'),
       ),
-      body: ListView(
-        padding: EdgeInsets.symmetric(horizontal: 24),
-        children: [
-          SizedBox(height: 24),
-          OverviewReport(),
-          Row(
-            children: [
-              Expanded(
-                child: AspectRatio(
-                  aspectRatio: 1,
-                  child: BRBRCard(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('자주 방문한 스테이션', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: BRBRColors.highlightText)),
-                        SizedBox(height: 12),
-                        Text('동탄 반송 3\n스테이션', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                        SizedBox(height: 8),
-                        Text('총 7회', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: BRBRColors.secondaryText)),
-                      ],
-                    ),
-                    padding: EdgeInsets.only(top: 24, left: 16, right: 16, bottom: 16),
-                  ),
-                ),
-              ),
-              Expanded(
-                child: AspectRatio(
-                  aspectRatio: 1,
-                  child: BRBRCard(
-                    child: Stack(
-                      children: [
-                        Stack(
-                          fit: StackFit.expand,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('내 주변 스테이션', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                                SizedBox(height: 16),
-                                Text(
-                                  '53m',
-                                  style: TextStyle(color: BRBRColors.highlight, fontSize: 34, fontWeight: FontWeight.bold),
-                                ),
-                                SizedBox(height: 2),
-                                Text('동탄 반송 3 스테이션', style: TextStyle(fontSize: 12)),
-                              ],
-                            ),
-                            Positioned(child: Icon(Icons.arrow_forward_ios, size: 18), right: 0, bottom: 0),
-                          ],
-                        ),
-                      ],
-                    ),
-                    padding: EdgeInsets.only(top: 24, left: 16, right: 16, bottom: 16),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 8),
-          BRBRCard(child: Image.asset('assets/trash_percentage.png', width: double.infinity)),
-          SizedBox(height: 8),
-          BRBRCard(child: Image.asset('assets/trash_report.png')),
-          SizedBox(height: 4),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 26),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+      body: RefreshIndicator(
+        color: BRBRColors.highlight,
+        onRefresh: () async {
+          context.read<BRBRReceiptInfos>().clearInfos();
+          await context.read<BRBRReceiptInfos>().update();
+        },
+        child: ListView(
+          physics: AlwaysScrollableScrollPhysics(),
+          padding: EdgeInsets.symmetric(horizontal: 24),
+          children: [
+            SizedBox(height: 24),
+            OverviewReport(),
+            Row(
               children: [
-                Text('5월 1주', style: TextStyle(fontSize: 11)),
-                Text('5월 2주', style: TextStyle(fontSize: 11)),
-                Text('5월 3주', style: TextStyle(fontSize: 11)),
-                Text('6월 1주', style: TextStyle(fontSize: 11)),
-                Text('6월 2주', style: TextStyle(fontSize: 11)),
-                Text('6월 3주', style: TextStyle(fontSize: 11)),
+                Expanded(
+                  child: AspectRatio(
+                    aspectRatio: 1,
+                    child: BRBRCard(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('자주 방문한 스테이션', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: BRBRColors.highlightText)),
+                          SizedBox(height: 12),
+                          Text('동탄 반송 3\n스테이션', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                          SizedBox(height: 8),
+                          Text('총 7회', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: BRBRColors.secondaryText)),
+                        ],
+                      ),
+                      padding: EdgeInsets.only(top: 24, left: 16, right: 16, bottom: 16),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: AspectRatio(
+                    aspectRatio: 1,
+                    child: BRBRCard(
+                      child: Stack(
+                        children: [
+                          Stack(
+                            fit: StackFit.expand,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('내 주변 스테이션', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                                  SizedBox(height: 16),
+                                  Text(
+                                    '53m',
+                                    style: TextStyle(color: BRBRColors.highlight, fontSize: 34, fontWeight: FontWeight.bold),
+                                  ),
+                                  SizedBox(height: 2),
+                                  Text('동탄 반송 3 스테이션', style: TextStyle(fontSize: 12)),
+                                ],
+                              ),
+                              Positioned(child: Icon(Icons.arrow_forward_ios, size: 18), right: 0, bottom: 0),
+                            ],
+                          ),
+                        ],
+                      ),
+                      padding: EdgeInsets.only(top: 24, left: 16, right: 16, bottom: 16),
+                    ),
+                  ),
+                ),
               ],
             ),
-          )
-        ],
+            SizedBox(height: 8),
+            BRBRCard(child: Image.asset('assets/trash_percentage.png', width: double.infinity)),
+            SizedBox(height: 8),
+            BRBRCard(child: Image.asset('assets/trash_report.png')),
+            SizedBox(height: 4),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 26),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text('5월 1주', style: TextStyle(fontSize: 11)),
+                  Text('5월 2주', style: TextStyle(fontSize: 11)),
+                  Text('5월 3주', style: TextStyle(fontSize: 11)),
+                  Text('6월 1주', style: TextStyle(fontSize: 11)),
+                  Text('6월 2주', style: TextStyle(fontSize: 11)),
+                  Text('6월 3주', style: TextStyle(fontSize: 11)),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

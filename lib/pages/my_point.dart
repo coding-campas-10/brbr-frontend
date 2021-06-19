@@ -13,46 +13,53 @@ class MyPointPage extends StatelessWidget {
       appBar: AppBar(
         title: Text('내 포인트'),
       ),
-      body: ListView(
-        children: [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 40),
-                Text('${context.select<BRBRUser, String?>((user) => user.name) ?? '--'}님의 포인트', style: TextStyle(fontSize: 16, color: BRBRColors.secondaryText, fontWeight: FontWeight.bold)),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Consumer<BRBRReceiptInfos>(
-                      builder: (context, value, child) {
-                        return Text(
-                          '${value.getTotalPoint() != null ? NumberFormat('###,###,###,###').format(value.getTotalPoint()) : '--'} 포인트',
-                          style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
-                        );
-                      },
-                    ),
-                    MaterialButton(
-                      highlightElevation: 0,
-                      child: Text('변환'),
-                      minWidth: 0,
-                      onPressed: () {},
-                      color: BRBRColors.highlight,
-                      elevation: 0,
-                      textColor: Colors.white,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                    )
-                  ],
-                ),
-              ],
+      body: RefreshIndicator(
+        color: BRBRColors.highlight,
+        onRefresh: () async {
+          await context.read<BRBRReceiptInfos>().update();
+        },
+        child: ListView(
+          physics: AlwaysScrollableScrollPhysics(),
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 40),
+                  Text('${context.select<BRBRUser, String?>((user) => user.name) ?? '--'}님의 포인트', style: TextStyle(fontSize: 16, color: BRBRColors.secondaryText, fontWeight: FontWeight.bold)),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Consumer<BRBRReceiptInfos>(
+                        builder: (context, value, child) {
+                          return Text(
+                            '${value.getTotalPoint() != null ? NumberFormat('###,###,###,###').format(value.getTotalPoint()) : '--'} 포인트',
+                            style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+                          );
+                        },
+                      ),
+                      MaterialButton(
+                        highlightElevation: 0,
+                        child: Text('변환'),
+                        minWidth: 0,
+                        onPressed: () {},
+                        color: BRBRColors.highlight,
+                        elevation: 0,
+                        textColor: Colors.white,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                      )
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
-          SizedBox(height: 32),
-          Column(
-            children: receipts.receipts?.map((e) => ReceiptTile(e)).toList() ?? [Container()],
-          ),
-        ],
+            SizedBox(height: 32),
+            Column(
+              children: receipts.receipts?.map((e) => ReceiptTile(e)).toList() ?? [Container()],
+            ),
+          ],
+        ),
       ),
     );
   }
