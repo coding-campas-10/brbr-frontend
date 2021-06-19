@@ -17,10 +17,7 @@ class _BRBRWrapperState extends State<BRBRWrapper> {
     final _pages = [HomePage(), ExplorePage(), MorePage()], _appBars = [homePageAppBar(context), null, null];
     return Scaffold(
       appBar: _appBars[_pageIndex],
-      body: IndexedStack(
-        index: _pageIndex,
-        children: _pages,
-      ),
+      body: _pages[_pageIndex],
       bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home_outlined), activeIcon: Icon(Icons.home), label: ''),

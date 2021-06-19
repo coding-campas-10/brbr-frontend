@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:async/async.dart';
 import 'package:brbr/constants/kakao_app_key.dart';
 import 'package:brbr/models/brbr_receipt.dart';
+import 'package:brbr/models/brbr_station.dart';
 import 'package:brbr/models/brbr_user.dart';
 import 'package:brbr/pages/announce.dart';
 import 'package:brbr/pages/barcode.dart';
@@ -149,8 +150,8 @@ class BRBRService {
     Response response = await Requests.get('http://api.asdf.land/wallet');
     print('BRBR서버에 wallet/wallet 요청');
     if (response.statusCode == 200) {
-      List<dynamic> datas = jsonDecode(response.content());
-      List<BRBRReceipt> receipts = datas.map((e) => BRBRReceipt.fromMap(e as Map<String, dynamic>)).toList();
+      List datas = jsonDecode(response.content());
+      List<BRBRReceipt> receipts = datas.map((e) => BRBRReceipt.fromMap(e)).toList();
       print('사용 내역을 성공적으로 불러옴');
       return receipts;
     }
@@ -163,5 +164,19 @@ class BRBRService {
       print('가장 많이 방문한 스테이션을 성공적으로 불러옴');
     }
     return response;
+  }
+
+  static Future<List<StationLocation>?> getAllStations() async {
+    Response response = await Requests.get('http://api.asdf.land/stations');
+    print('BRBR서버에 stations 요청');
+    if (response.statusCode == 200) {
+      List datats = jsonDecode(response.content())['stations'];
+      List<StationLocation> stationLocations = datats.map((e) => StationLocation.fromMap(e)).toList();
+      print('모든 스테이션의 위치를 성공적으로 불러옴');
+      for (var _stationLocation in stationLocations) {
+        print('id : ${_stationLocation.stationId}, lat : ${_stationLocation.latitude}, lon : ${_stationLocation.longtitude}');
+      }
+      return stationLocations;
+    }
   }
 }
