@@ -25,7 +25,7 @@ class _ExplorePageState extends State<ExplorePage> {
   Station? _selectedStation;
 
   static final CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(37.20098932396427, 127.07942375504356),
+    target: LatLng(37.34194, 126.831327),
     zoom: 14.4746,
   );
 

@@ -85,7 +85,9 @@ class _BarcodePageState extends State<BarcodePage> {
                     );
                   } else {
                     return Center(
-                      child: CircularProgressIndicator(),
+                      child: CircularProgressIndicator(
+                        color: BRBRColors.highlight,
+                      ),
                     );
                   }
                 },

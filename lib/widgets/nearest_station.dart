@@ -4,6 +4,7 @@ import 'package:brbr/models/location_provider.dart';
 import 'package:brbr/services/brbr_service.dart';
 import 'package:brbr/widgets/brbr_card.dart';
 import 'package:flutter/material.dart';
+import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 
 class NearestStation extends StatelessWidget {
@@ -20,21 +21,22 @@ class NearestStation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    context.read<LocationProvider>().requestPermissionAndService();
     return Consumer<LocationProvider>(
       builder: (context, locationProvider, child) {
+        print('locationProvider Consumer build');
         return FutureBuilder(
-          initialData: null,
           future: locationProvider.isLocationAvailable(),
-          builder: (context, snapshot) {
+          builder: (context, locationServiceStatus) {
             return Expanded(
               child: AspectRatio(
                 aspectRatio: 1,
                 child: BRBRCard(
                   onTab: () async {
-                    if (snapshot.data == LocationServiceStatus.GPSDisabled) {
+                    if (locationServiceStatus.data == LocationServiceStatus.GPSDisabled) {
                       await locationProvider.requestPermissionAndService();
                     }
-                    if (snapshot.data == LocationServiceStatus.PermissionNotAllowd) {
+                    if (locationServiceStatus.data == LocationServiceStatus.PermissionNotAllowd) {
                       await locationProvider.requestPermissionAndService();
                     }
                   },
@@ -50,41 +52,42 @@ class NearestStation extends StatelessWidget {
                               SizedBox(height: 16),
                               Builder(
                                 builder: (context) {
-                                  if (snapshot.data == null) {
+                                  LocationData? locationData = locationProvider.locationData;
+                                  LocationServiceStatus? status = locationServiceStatus.data as LocationServiceStatus?;
+                                  if (status == null) {
                                     return Text('--');
-                                  } else {
-                                    LocationServiceStatus status = snapshot.data as LocationServiceStatus;
-                                    if (status == LocationServiceStatus.Enabled) {
-                                      return FutureBuilder(
-                                        future: BRBRService.getNearestStation(locationProvider.locationData!.longitude!, locationProvider.locationData!.latitude!),
-                                        builder: (context, snapshot) {
-                                          Station? station = snapshot.data as Station?;
-                                          if (station != null) {
-                                            return Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  _formatDistance(station.distanceFrom(locationProvider.locationData!.latitude!, locationProvider.locationData!.longitude!)),
-                                                  style: TextStyle(color: BRBRColors.highlight, fontSize: 34, fontWeight: FontWeight.bold),
-                                                ),
-                                                SizedBox(height: 2),
-                                                Text(station.stationName, style: TextStyle(fontSize: 12)),
-                                              ],
-                                            );
-                                          } else {
-                                            return Container();
-                                          }
-                                        },
-                                      );
+                                  }
+                                  if (locationData == null) {
+                                    String text;
+                                    if (status == LocationServiceStatus.GPSDisabled || status == LocationServiceStatus.Disabled) {
+                                      text = 'GPS를 켜주세요';
                                     } else {
-                                      String text;
-                                      if (status == LocationServiceStatus.GPSDisabled || status == LocationServiceStatus.Disabled) {
-                                        text = 'GPS를 켜주세요';
-                                      } else {
-                                        text = '정확한 위치 권한을 허용해주세요';
-                                      }
-                                      return Text(text);
+                                      text = '정확한 위치 권한을 허용해주세요';
                                     }
+                                    return Text(text);
+                                  } else {
+                                    return FutureBuilder(
+                                      future: BRBRService.getNearestStation(locationProvider.locationData!.longitude!, locationProvider.locationData!.latitude!),
+                                      builder: (context, snapshot) {
+                                        print('future builder builded');
+                                        Station? station = snapshot.data as Station?;
+                                        if (station != null) {
+                                          return Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                _formatDistance(station.distanceFrom(locationProvider.locationData!.latitude!, locationProvider.locationData!.longitude!)),
+                                                style: TextStyle(color: BRBRColors.highlight, fontSize: 34, fontWeight: FontWeight.bold),
+                                              ),
+                                              SizedBox(height: 2),
+                                              Text(station.stationName, style: TextStyle(fontSize: 12)),
+                                            ],
+                                          );
+                                        } else {
+                                          return Container();
+                                        }
+                                      },
+                                    );
                                   }
                                 },
                               ),

@@ -36,7 +36,6 @@ class LocationProvider extends ChangeNotifier {
   }
 
   Future<bool> requestPermissionAndService() async {
-    print('위치 정보 요청');
     bool _serviceEnabled;
     PermissionStatus _permissionGranted;
 
@@ -59,18 +58,18 @@ class LocationProvider extends ChangeNotifier {
       }
     }
     print('위치 서비스 권한 있음');
-
     return true;
   }
 
-  Future<bool> updateLocation() async {
-    bool locationAvailable = await requestPermissionAndService();
-    if (locationAvailable) {
-      _locationData = await _location.getLocation();
-      notifyListeners();
-      return false;
-    } else {
-      return false;
-    }
-  }
+  // Future<bool> updateLocation() async {
+  //   LocationServiceStatus status = await isLocationAvailable();
+  //   print(status);
+  //   if (status == LocationServiceStatus.Enabled) {
+  //     _locationData = await _location.getLocation();
+  //     notifyListeners();
+  //     return false;
+  //   } else {
+  //     return false;
+  //   }
+  // }
 }

@@ -1,8 +1,8 @@
 import 'package:brbr/constants/colors.dart';
 import 'package:brbr/models/brbr_receipt.dart';
 import 'package:brbr/models/brbr_user.dart';
-import 'package:brbr/pages/home.dart';
 import 'package:brbr/widgets/brbr_card.dart';
+import 'package:brbr/widgets/nearest_station.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:provider/provider.dart';

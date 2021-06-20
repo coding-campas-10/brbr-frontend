@@ -1,3 +1,4 @@
+import 'package:brbr/constants/colors.dart';
 import 'package:brbr/models/brbr_receipt.dart';
 import 'package:brbr/models/brbr_user.dart';
 import 'package:brbr/models/location_provider.dart';
@@ -18,13 +19,15 @@ class BRBRApp extends StatelessWidget {
   Widget _loadingPage() {
     return Scaffold(
       body: Center(
-        child: CircularProgressIndicator(),
+        child: CircularProgressIndicator(
+          color: BRBRColors.highlight,
+        ),
       ),
     );
   }
 
   Future<Widget> _loginSequence(BuildContext context) async {
-    if (context.read<BRBRUser>().userId != null) {
+    if (context.select<BRBRUser, int?>((user) => user.userId) != null) {
       return BRBRWrapper();
     }
     bool isLoggedIn = await BRBRService.isLoggedIn();
@@ -33,7 +36,6 @@ class BRBRApp extends StatelessWidget {
       if (user != null) {
         context.read<BRBRReceiptInfos>().update();
         context.read<BRBRUser>().updateUserInfo(user);
-        return BRBRWrapper();
       }
       return _loadingPage();
     }
@@ -69,17 +71,19 @@ class BRBRApp extends StatelessWidget {
           ),
           scaffoldBackgroundColor: Colors.white,
         ),
-        home: Consumer<BRBRUser>(
-          builder: (context, user, child) => FutureBuilder(
-            future: _loginSequence(context),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return snapshot.data as Widget;
-              } else {
-                return _loadingPage();
-              }
-            },
-          ),
+        home: Builder(
+          builder: (context) {
+            return FutureBuilder(
+              future: _loginSequence(context),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return snapshot.data as Widget;
+                } else {
+                  return _loadingPage();
+                }
+              },
+            );
+          },
         ),
       ),
     );

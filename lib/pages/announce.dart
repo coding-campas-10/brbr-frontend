@@ -1,3 +1,4 @@
+import 'package:brbr/constants/colors.dart';
 import 'package:brbr/pages/announce_detail.dart';
 import 'package:brbr/services/brbr_service.dart';
 import 'package:flutter/material.dart';
@@ -64,7 +65,9 @@ class AnnouncePage extends StatelessWidget {
             }
           } else {
             return Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(
+                color: BRBRColors.highlight,
+              ),
             );
           }
         },
