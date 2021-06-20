@@ -75,6 +75,12 @@ class _ExplorePageState extends State<ExplorePage> {
     return Stack(
       children: [
         GoogleMap(
+          onTap: (argument) {
+            setState(() {
+              _selectedStation = null;
+              _selectedStationId = null;
+            });
+          },
           mapType: MapType.normal,
           initialCameraPosition: _kGooglePlex,
           mapToolbarEnabled: false,

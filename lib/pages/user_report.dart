@@ -35,11 +35,11 @@ class UserReportPage extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('자주 방문한 스테이션', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: BRBRColors.highlightText)),
+                          Text('자주 방문한 스테이션', style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: BRBRColors.highlightText)),
                           SizedBox(height: 12),
                           Text('동탄 반송 3\n스테이션', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                           SizedBox(height: 8),
-                          Text('총 7회', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: BRBRColors.secondaryText)),
+                          Text('총 7회', style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: BRBRColors.secondaryText)),
                         ],
                       ),
                       padding: EdgeInsets.only(top: 24, left: 16, right: 16, bottom: 16),
