@@ -1,6 +1,7 @@
 import 'package:brbr/constants/colors.dart';
 import 'package:brbr/models/brbr_receipt.dart';
 import 'package:brbr/models/brbr_user.dart';
+import 'package:brbr/pages/home.dart';
 import 'package:brbr/widgets/brbr_card.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
@@ -45,37 +46,7 @@ class UserReportPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                Expanded(
-                  child: AspectRatio(
-                    aspectRatio: 1,
-                    child: BRBRCard(
-                      child: Stack(
-                        children: [
-                          Stack(
-                            fit: StackFit.expand,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text('내 주변 스테이션', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                                  SizedBox(height: 16),
-                                  Text(
-                                    '53m',
-                                    style: TextStyle(color: BRBRColors.highlight, fontSize: 34, fontWeight: FontWeight.bold),
-                                  ),
-                                  SizedBox(height: 2),
-                                  Text('동탄 반송 3 스테이션', style: TextStyle(fontSize: 12)),
-                                ],
-                              ),
-                              Positioned(child: Icon(Icons.arrow_forward_ios, size: 18), right: 0, bottom: 0),
-                            ],
-                          ),
-                        ],
-                      ),
-                      padding: EdgeInsets.only(top: 24, left: 16, right: 16, bottom: 16),
-                    ),
-                  ),
-                ),
+                NearestStation(),
               ],
             ),
             SizedBox(height: 8),

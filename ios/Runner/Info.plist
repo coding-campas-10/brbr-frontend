@@ -18,6 +18,8 @@
 	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>버려버려가 사용자의 위치 장보를 요구합니다.</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>

@@ -2,12 +2,15 @@ import 'dart:async';
 import 'dart:typed_data';
 import 'package:brbr/constants/colors.dart';
 import 'package:brbr/models/brbr_station.dart';
+import 'package:brbr/models/location_provider.dart';
 import 'package:brbr/services/brbr_service.dart';
 import 'package:brbr/widgets/brbr_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'dart:ui' as ui;
+import 'package:location/location.dart';
+import 'package:provider/provider.dart';
 
 class ExplorePage extends StatefulWidget {
   @override
@@ -36,7 +39,6 @@ class _ExplorePageState extends State<ExplorePage> {
               onTap: () async {
                 _selectedStationId = stationLocation.stationId;
                 _selectedStation = await BRBRService.getDetailStation(_selectedStationId!);
-                print(_selectedStation!.stationName);
                 setState(() {});
               },
               icon: BitmapDescriptor.fromBytes(_selectedStationId == stationLocation.stationId ? _selectedMarkerIcon : _markerIcon),
@@ -62,8 +64,8 @@ class _ExplorePageState extends State<ExplorePage> {
   }
 
   Future<void> _init() async {
-    _markerIcon = await getBytesFromAsset('assets/brbr_map_marker.png', 200);
-    _selectedMarkerIcon = await getBytesFromAsset('assets/brbr_map_marker_selected.png', 200);
+    _markerIcon = await getBytesFromAsset('assets/brbr_map_marker.png', 240);
+    _selectedMarkerIcon = await getBytesFromAsset('assets/brbr_map_marker_selected.png', 240);
     stationLocations = await BRBRService.getAllStations();
     setState(() {});
   }
@@ -77,17 +79,17 @@ class _ExplorePageState extends State<ExplorePage> {
           initialCameraPosition: _kGooglePlex,
           mapToolbarEnabled: false,
           rotateGesturesEnabled: false,
-          myLocationButtonEnabled: false,
+          myLocationButtonEnabled: true,
           zoomControlsEnabled: false,
           markers: getMarkers(),
           onMapCreated: (GoogleMapController controller) {
             _controller.complete(controller);
           },
+          myLocationEnabled: true,
         ),
         Builder(
           builder: (context) {
             if (_selectedStation != null) {
-              print('builder:' + _selectedStation!.stationName);
               return Positioned(
                 bottom: 16,
                 left: 16,
@@ -108,9 +110,19 @@ class StationFloatingCard extends StatelessWidget {
   final Station station;
   StationFloatingCard(this.station);
 
+  String _formatDistance(double distacne) {
+    if (distacne < 1000) {
+      return distacne.toInt().toString() + 'm';
+    }
+    if (1000 <= distacne && distacne < 10000) {
+      return (distacne ~/ 100 / 10).toString() + 'km';
+    } else {
+      return (distacne ~/ 1000).toString() + 'km';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    print('card builded ${station.stationName}');
     return BRBRCard(
       padding: EdgeInsets.all(16),
       child: Stack(
@@ -129,7 +141,18 @@ class StationFloatingCard extends StatelessWidget {
           Positioned(
             right: 0,
             bottom: 0,
-            child: Text('68m', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: BRBRColors.highlight)),
+            child: Consumer<LocationProvider>(
+              builder: (context, locationProvider, child) {
+                LocationData? locationData = locationProvider.locationData;
+                String text;
+                if (locationData != null) {
+                  text = _formatDistance(station.distanceFrom(locationData.latitude!, locationData.longitude!));
+                } else {
+                  text = '--m';
+                }
+                return Text(text, style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: BRBRColors.highlight));
+              },
+            ),
           ),
         ],
       ),

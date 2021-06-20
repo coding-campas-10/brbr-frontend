@@ -185,4 +185,34 @@ class BRBRService {
       return Station.fromMap(jsonDecode(response.content()));
     }
   }
+
+  static Future<Station?> getNearestStation(double lon, double lat) async {
+    Response response = await Requests.post(
+      'http://api.asdf.land/stations/near',
+      json: jsonEncode(
+        <String, dynamic>{
+          "location": {
+            "lat": lat,
+            "lng": lon,
+          }
+        },
+      ),
+    );
+    print('BRBR서버에 stations/near 요청');
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      print('가장 가까운 스테이션을 성공적으로 불러옴');
+      print(jsonEncode(
+        <String, dynamic>{
+          "location": {
+            "lat": lat,
+            "lng": lon,
+          }
+        },
+      ));
+      print(response.content());
+      print(Station.fromMap(jsonDecode(response.content())));
+      return Station.fromMap(jsonDecode(response.content()));
+    }
+  }
 }

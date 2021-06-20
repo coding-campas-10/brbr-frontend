@@ -1,5 +1,6 @@
 import 'package:brbr/models/brbr_receipt.dart';
 import 'package:brbr/models/brbr_user.dart';
+import 'package:brbr/models/location_provider.dart';
 import 'package:brbr/pages/login.dart';
 import 'package:brbr/pages/wrapper.dart';
 import 'package:brbr/services/brbr_service.dart';
@@ -48,7 +49,10 @@ class BRBRApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => BRBRReceiptInfos(),
-        )
+        ),
+        ChangeNotifierProvider(
+          create: (context) => LocationProvider(),
+        ),
       ],
       child: MaterialApp(
         title: '버려버려',
